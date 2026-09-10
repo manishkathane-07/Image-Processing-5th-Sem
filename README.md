@@ -91,14 +91,4 @@ d:/IP/Post lab/
 └── README.md            # Project overview and GitHub Pages deployment guide
 ```
 
----
 
-## 💻 Running Locally
-
-Simply double-click `index.html` to open it in any web browser (Chrome, Edge, Firefox, Safari).
-
-Or start a local lightweight web server:
-```bash
-python -m http.server 8080
-```
-Then visit: `http://localhost:8080`
