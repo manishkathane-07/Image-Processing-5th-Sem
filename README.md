@@ -1,0 +1,82 @@
+# Digital Image Processing Virtual Laboratory
+
+**Post Lab Project**  
+**Subject:** Image Processing Lab (`N-PECCS502P`)  
+**Student Name:** Manish Kathane  
+**USN:** CS24091  
+**Semester & Branch:** V Semester, B.Tech. CSE (Academic Session 2026–27)  
+**Institution:** S. B. Jain Institute of Technology, Management & Research, Nagpur  
+
+---
+
+## 🌟 Overview
+
+This repository hosts the **Digital Image Processing Virtual Laboratory**, an interactive single-page web application featuring **10 dedicated practical modules** covering fundamental and advanced spatial and color image processing techniques.
+
+All operations execute **100% client-side** directly in your browser using HTML5 Canvas 2D and high-performance Typed Arrays (`Uint8ClampedArray`, `Float32Array`). No server backend, Python runtime, or external packages are required to run the laboratory!
+
+---
+
+## 🚀 Live Demo & Deployment
+
+- **Live Web App:** `https://<your-username>.github.io/<your-repo-name>/`
+- **GitHub Repository:** `https://github.com/<your-username>/<your-repo-name>`
+
+### Deploying to GitHub Pages in 2 Minutes:
+1. Initialize git and commit files:
+   ```bash
+   git init
+   git add .
+   git commit -m "Complete Digital Image Processing Virtual Lab with 10 Practicals"
+   git branch -M main
+   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git push -u origin main
+   ```
+2. Go to your repository on **GitHub** &rarr; **Settings** &rarr; **Pages**.
+3. Under **Build and deployment** &rarr; **Branch**, select `main` and root `/`, then click **Save**.
+4. Within 60 seconds, your site will be live at:
+   `https://<your-username>.github.io/<your-repo-name>/`
+5. Generate static QR codes for your GitHub repo and Deployment URL at [QRCode Monkey](https://www.qrcode-monkey.com/) and paste them into Page 2 of your report!
+
+---
+
+## 🧪 Included Practicals (10 Tabs)
+
+| Tab | Practical Topic | Key Operations Implemented |
+|---|---|---|
+| **Tab 1** | **Formats & Arithmetic/Bitwise** | RGB to Grayscale (ITU-R BT.601), Invert negative, Sepia tone, Brightness Addition/Subtraction with clamping, Alpha blending, Bitwise AND/OR/XOR/NOT, and full 8-Bit-Plane Slicing. |
+| **Tab 2** | **2D Geometric Transformations** | Translation ($T_x, T_y$), Rotation ($\theta$), Scaling ($S_x, S_y$), Shearing ($Sh_x, Sh_y$), Reflection (Horizontal/Vertical/Both), and Cropping. |
+| **Tab 3** | **Spatial Domain Enhancement** | Histogram Equalization with live intensity histogram plots, Linear Contrast Stretching, Laplacian Spatial Sharpening, Global Thresholding, and Otsu's Thresholding. |
+| **Tab 4** | **Spatial Domain Filtering** | Averaging (Box Mean) Filter, Gaussian Filter with configurable $\sigma$, Median Filter with impulsive Salt & Pepper noise removal, and Bilateral edge-preserving filter. |
+| **Tab 5** | **Image Inpainting** | Interactive scratch/crack drawing canvas, Alexandru Telea Fast Marching inpainting, and Navier-Stokes fluid isophote transport inpainting. |
+| **Tab 6** | **Lossless Image Compression** | Run-Length Encoding (RLE), Huffman variable-length coding, Shannon entropy calculation, file size metrics, and bit-for-bit lossless verification ($MAE = 0$). |
+| **Tab 7** | **Morphological Operations** | Erosion, Dilation, Opening, Closing, Morphological Gradient, and Boundary Extraction with Square, Cross, and Disk structuring elements. |
+| **Tab 8** | **Object Detection via Correlation** | 2D Normalized Cross-Correlation (NCC) and SSD template matching, detection bounding box, peak confidence score, and 2D thermal correlation response surface heatmap. |
+| **Tab 9** | **Color Spaces** | RGB, HSV (Hue-Saturation-Value), YCrCb (Digital TV standard), and CIELAB ($L^*a^*b^*$) with 3 isolated channel views and full-color reconstruction. |
+| **Tab 10** | **Edge Detection** | Sobel ($G_x, G_y$), Prewitt ($G_x, G_y$), and complete 4-stage Canny Edge Detector (Gaussian smoothing, gradient orientation, Non-Maximum Suppression, and Hysteresis double-thresholding). |
+
+---
+
+## 📁 Project Structure
+
+```
+d:/IP/Post lab/
+├── index.html           # Main single-page web app with 10 interactive practical tabs
+├── styles.css           # Modern, responsive UI theme and dashboard layout
+├── app.js               # Mathematical & algorithmic image processing engine
+├── sample-images.js     # Built-in offline test image generators
+├── REPORT_CONTENT.md    # Complete academic report content matching college format
+└── README.md            # Project overview and GitHub Pages deployment guide
+```
+
+---
+
+## 💻 Running Locally
+
+Simply double-click `index.html` to open it in any web browser (Chrome, Edge, Firefox, Safari).
+
+Or start a local lightweight web server:
+```bash
+python -m http.server 8080
+```
+Then visit: `http://localhost:8080`
