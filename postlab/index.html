@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Image Processing Virtual Laboratory | Post Lab Project</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Header Banner -->
+  <header>
+    <div class="header-container">
+      <div class="brand-info">
+        <h1><i class="fa-solid fa-microchip"></i> Digital Image Processing Virtual Lab</h1>
+      </div>
+      <div class="student-badge">
+        <span class="name">Manish Kathane</span>
+        <span class="meta">USN: CS24091</span>
+        <span class="meta">V Semester, B.Tech CSE (2026-27)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 10 Tabs Navigation -->
+  <div class="tabs-nav-container">
+    <nav class="tabs-nav" id="mainTabs">
+      <button class="tab-btn active" data-tab="tab1">
+        <span class="tab-num">1</span> Formats & Operations
+      </button>
+      <button class="tab-btn" data-tab="tab2">
+        <span class="tab-num">2</span> 2D Transformations
+      </button>
+      <button class="tab-btn" data-tab="tab3">
+        <span class="tab-num">3</span> Image Enhancement
+      </button>
+      <button class="tab-btn" data-tab="tab4">
+        <span class="tab-num">4</span> Spatial Filters
+      </button>
+      <button class="tab-btn" data-tab="tab5">
+        <span class="tab-num">5</span> Inpainting
+      </button>
+      <button class="tab-btn" data-tab="tab6">
+        <span class="tab-num">6</span> Lossless Compression
+      </button>
+      <button class="tab-btn" data-tab="tab7">
+        <span class="tab-num">7</span> Morphology
+      </button>
+      <button class="tab-btn" data-tab="tab8">
+        <span class="tab-num">8</span> Object Detection
+      </button>
+      <button class="tab-btn" data-tab="tab9">
+        <span class="tab-num">9</span> Color Spaces
+      </button>
+      <button class="tab-btn" data-tab="tab10">
+        <span class="tab-num">10</span> Edge Detection
+      </button>
+    </nav>
+  </div>
+
+  <!-- Main Content Container -->
+  <main>
+
+    <!-- Global Image Controls Bar (Available on active tab) -->
+    <div class="display-toolbar" style="background:#fff; padding: 0.8rem 1.2rem; border-radius: var(--radius-md); margin-bottom: 1.2rem; border: 1px solid var(--border-color);">
+      <div class="preset-selector">
+        <label for="globalPreset" style="font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-images"></i> Sample Image:</label>
+        <select id="globalPreset" style="width: auto;">
+          <option value="scene">Natural Scene</option>
+          <option value="shapes">Geometric Shapes & Noise</option>
+          <option value="contrast">Low Contrast Gradient</option>
+        </select>
+        <label class="btn btn-secondary" style="margin-left: 0.5rem; cursor: pointer; padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Upload Custom Image
+          <input type="file" id="imageUploader" accept="image/*" style="display: none;">
+        </label>
+      </div>
+      <div>
+        <button id="downloadBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+          <i class="fa-solid fa-download"></i> Download Output Image
+        </button>
+        <button id="resetBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; margin-left: 0.3rem;">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: Image Formats, Arithmetic & Bitwise Operations -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel active" id="tab1">
+      <div class="practical-banner">
+        <span class="tag">Practical 01</span>
+        <h3>Image Formats Conversion, Arithmetic & Bitwise Operations</h3>
+        <p>Convert images between RGB and Grayscale representations, execute pixel-wise arithmetic (addition, subtraction, alpha blend), and bitwise operations (AND, OR, XOR, NOT, Bit-Plane Slicing) to observe pixel data encoding.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-sliders"></i> Operations</h4>
+          
+          <div class="control-group">
+            <label for="p1_category">Operation Category:</label>
+            <select id="p1_category">
+              <option value="format">Color Format Conversions</option>
+              <option value="arithmetic">Pixel Arithmetic</option>
+              <option value="bitwise">Bitwise & Bit-Plane Operations</option>
+            </select>
+          </div>
+
+          <div id="p1_subcontrols">
+            <!-- Dynamically updated by JS based on category -->
+          </div>
+
+          <button id="p1_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-play"></i> Execute Operation
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Original Image (RGB)</span>
+                <span id="p1_orig_dim">320 &times; 320 px</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p1_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Processed Output</span>
+                <span id="p1_status_badge" class="slider-val">Ready</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p1_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bit plane grid container (when bit-plane slicing is chosen) -->
+          <div id="p1_bitplane_container" style="display: none; margin-top: 1rem;">
+            <h5 style="font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-secondary);">8-Bit Plane Decomposition (Bit 0 LSB to Bit 7 MSB):</h5>
+            <div class="channels-grid" id="p1_bitplanes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theory & Documentation -->
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i> Understanding Practical 1 in Simple Words</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-palette"></i> 1. Why RGB to Grayscale?</h6>
+            <p>A color image mixes 3 channels: <strong>Red, Green, and Blue</strong> (each ranging from 0 to 255). To make a black-and-white image, we don't just take a simple average! Human eyes are <em>naturally far more sensitive to green light</em> than red or blue. Therefore, standard grayscale uses <strong>59% Green + 30% Red + 11% Blue</strong> to create realistic brightness that matches human vision.</p>
+            <div class="real-world-box">📱 Used in: Document scanners, facial recognition pre-processing, and night mode photography.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-calculator"></i> 2. Pixel Arithmetic & Clamping</h6>
+            <p>Every pixel's brightness is an integer number from 0 (pitch black) to 255 (bright white). When you add brightness, values might exceed 255. <strong>Saturation Clamping</strong> prevents values from wrapping around: if a pixel reaches 270, it is safely locked at 255 instead of glitching into dark noise.</p>
+            <div class="real-world-box">⚙️ Used in: Exposure adjustment, shadow brightening, and watermark blending.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-layer-group"></i> 3. 8-Bit Planes Explained Simply</h6>
+            <p>Imagine each pixel as an <strong>8-story building</strong>:</p>
+            <ul class="simple-steps-list">
+              <li><strong>Top Floors (Bits 7 & 6 - MSB):</strong> Carry the main picture, contours, and major shapes. If you keep only these two bits, the image is still completely recognizable!</li>
+              <li><strong>Ground Floors (Bits 0 & 1 - LSB):</strong> Contain subtle background grain and noise. Secret messages and hidden watermarks are stashed into Bit 0 without anyone noticing!</li>
+            </ul>
+            <div class="real-world-box">🕵️ Used in: Digital steganography (hiding secret data) and image watermarking.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: 2D Geometric Transformations -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab2">
+      <div class="practical-banner">
+        <span class="tag">Practical 02</span>
+        <h3>2-D Geometric Transformation Operations</h3>
+        <p>Implement and visualize 2D spatial coordinate mapping transformations: Translation, Rotation, Scaling, Shearing, Reflection (flipping), and Cropping.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-compass-drafting"></i> Transform Settings</h4>
+          
+          <div class="control-group">
+            <label for="p2_transform_type">Transformation Mode:</label>
+            <select id="p2_transform_type">
+              <option value="translate">Translation (Shift X, Y)</option>
+              <option value="rotate">Rotation (Angle &theta;)</option>
+              <option value="scale">Scaling (Sx, Sy)</option>
+              <option value="shear">Shearing (Shx, Shy)</option>
+              <option value="reflect">Reflection (Flip)</option>
+              <option value="crop">Cropping</option>
+            </select>
+          </div>
+
+          <div id="p2_subcontrols">
+            <!-- Filled dynamically -->
+          </div>
+
+          <button id="p2_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-arrows-spin"></i> Apply Transformation
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Input Image</span>
+                <span>Original Coordinate Space</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p2_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Transformed Result</span>
+                <span id="p2_status_badge" class="slider-val">Transformed</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p2_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-compass-drafting" style="color: #4f46e5;"></i> The 6 Geometric Operations in Everyday Language</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-arrows-up-down-left-right"></i> Translation & Rotation</h6>
+            <p><strong>Translation:</strong> Shifts the image horizontally by X pixels and vertically by Y pixels without changing its size or angle.<br>
+            <strong>Rotation:</strong> Spins the entire photo around its central pivot point by a chosen angle (e.g. 45° or 90°), useful when straightening a tilted camera shot.</p>
+            <div class="real-world-box">📱 Used in: Phone auto-rotation and panorama image stitching.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Scaling & Shearing</h6>
+            <p><strong>Scaling:</strong> Magnifies (zooms in) or shrinks the image uniformly.<br>
+            <strong>Shearing:</strong> Tilts or slants the image sideways diagonally — exactly like gently pushing the top card of a stacked deck of playing cards.</p>
+            <div class="real-world-box">🚗 Used in: Self-driving car vision to correct roadside camera perspective.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-repeat"></i> Reflection & Cropping</h6>
+            <p><strong>Reflection (Flip):</strong> Flips the image like looking in a mirror (horizontal flip for front-facing selfie cameras, or vertical upside-down flip).<br>
+            <strong>Cropping:</strong> Trims away unwanted outer edges so you can focus only on the most important subject.</p>
+            <div class="real-world-box">📸 Used in: Instagram photo editors, thumbnail generators, and selfie mirror mode.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: Spatial Domain Image Enhancement -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab3">
+      <div class="practical-banner">
+        <span class="tag">Practical 03</span>
+        <h3>Spatial Domain Image Enhancement</h3>
+        <p>Enhance image features via contrast adjustment, Histogram Equalization (with real-time before/after intensity distribution graphs), Laplacian spatial sharpening, and intensity thresholding segmentation.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Enhancement Tools</h4>
+          
+          <div class="control-group">
+            <label for="p3_technique">Technique:</label>
+            <select id="p3_technique">
+              <option value="histeq">Histogram Equalization (Contrast Boost)</option>
+              <option value="contrast_stretch">Linear Contrast Stretching</option>
+              <option value="sharpen">Spatial Sharpening (Laplacian Kernel)</option>
+              <option value="threshold">Global Thresholding</option>
+              <option value="otsu">Otsu's Optimal Thresholding</option>
+            </select>
+          </div>
+
+          <div id="p3_subcontrols">
+            <!-- Dynamic parameters -->
+          </div>
+
+          <button id="p3_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-bolt"></i> Enhance Image
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Original Image & Histogram</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p3_src_canvas"></canvas>
+              </div>
+              <canvas id="p3_src_hist" width="300" height="90" style="margin-top: 0.6rem; border: 1px solid #cbd5e1; background: #fff;"></canvas>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Enhanced Image & Equalized Histogram</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p3_dst_canvas"></canvas>
+              </div>
+              <canvas id="p3_dst_hist" width="300" height="90" style="margin-top: 0.6rem; border: 1px solid #cbd5e1; background: #fff;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-wand-magic-sparkles" style="color: #4f46e5;"></i> Image Enhancement in Everyday Language</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-chart-column"></i> 1. What is Histogram Equalization?</h6>
+            <p>Think of an image's histogram as a <strong>score tally of light vs dark pixels</strong>. If a photo was taken in dense fog, rain, or bad lighting, all its pixels are squished together in the middle gray tones, making the picture look washed out and lifeless.</p>
+            <p><strong>Histogram Equalization</strong> grabs those squished brightness levels and spreads them out evenly across the entire range from pure black to pure white. Hidden textures in shadows and clouds suddenly pop out with rich, vibrant contrast!</p>
+            <div class="real-world-box">🏥 Used in: Medical X-rays, satellite weather imagery, and underwater photography.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-pen-nib"></i> 2. What is Spatial Sharpening?</h6>
+            <p>Sharpening makes blurry photos look <strong>crisp, in-focus, and defined</strong>. It works by scanning every pixel, comparing it to its 4 direct neighbors (up, down, left, right), and finding where colors change abruptly.</p>
+            <p>When it detects a boundary, it exaggerates the contrast: making the light side slightly brighter and the dark side slightly darker. As a result, fine textures like hair, eyelashes, text, and object silhouettes stand out sharply.</p>
+            <div class="real-world-box">🔍 Used in: Forensic photo enhancement and high-definition TV upscaling.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-sliders"></i> 3. Thresholding & Otsu's Method</h6>
+            <p>Thresholding converts a grayscale photo into a <strong>clean binary stencil (pure black and pure white)</strong>. You choose a cutoff number: any pixel brighter becomes white, and anything darker becomes black.</p>
+            <p><strong>Otsu's Method is smart:</strong> Instead of making you guess the cutoff number through trial and error, it scans the image histogram and mathematically calculates the perfect cutoff point automatically!</p>
+            <div class="real-world-box">📄 Used in: OCR text scanning (CamScanner) and barcode reading.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: Spatial Domain Filtering -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab4">
+      <div class="practical-banner">
+        <span class="tag">Practical 04</span>
+        <h3>Spatial Domain Filtering (Averaging, Gaussian, Median, Bilateral)</h3>
+        <p>Apply linear and non-linear spatial domain 2D convolution filters to suppress noise and preserve edge boundaries.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-filter"></i> Filter Configuration</h4>
+          
+          <div class="control-group">
+            <label for="p4_filter_type">Filter Type:</label>
+            <select id="p4_filter_type">
+              <option value="average">Averaging (Box Mean) Filter</option>
+              <option value="gaussian">Gaussian Smoothing Filter</option>
+              <option value="median">Median Filter (Non-linear)</option>
+              <option value="bilateral">Bilateral Filter (Edge-Preserving)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p4_noise">Add Synthetic Noise to Input:</label>
+            <select id="p4_noise">
+              <option value="none">None (Clean Image)</option>
+              <option value="salt_pepper">Salt & Pepper Noise (5%)</option>
+              <option value="gaussian_noise">Gaussian Additive Noise</option>
+            </select>
+          </div>
+
+          <div id="p4_subcontrols">
+            <!-- Filter specific params -->
+          </div>
+
+          <button id="p4_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-circle-notch"></i> Apply Spatial Filter
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Input (with selected noise)</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p4_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Filtered Output</span>
+                <span id="p4_status_badge" class="slider-val">Filtered</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p4_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-filter" style="color: #06b6d4;"></i> Which Filter Should You Use? (Simple Guide)</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-braille"></i> Averaging vs Gaussian Filter</h6>
+            <p><strong>Averaging Filter (Box Mean):</strong> Replaces every pixel with the simple average of its neighborhood. It is very fast, but it blurs sharp object boundaries and makes details look fuzzy.</p>
+            <p><strong>Gaussian Filter:</strong> A much gentler, natural blur. Pixels right near the center have high weight, while outer pixels have low weight (like a bell curve). It mimics natural camera defocus (bokeh).</p>
+            <div class="real-world-box">📸 Used in: Background blur portrait modes and noise pre-filters.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-broom"></i> Median Filter: The Noise Destroyer!</h6>
+            <p><strong>The ultimate cure for "Salt & Pepper" noise</strong> (the ugly random white and black dots that appear on corrupted camera sensors or old analog TV broadcasts).</p>
+            <p>Instead of averaging, it sorts all neighboring pixel numbers and <strong>picks the median (middle) value</strong>. Because white (255) and black (0) noise specks are extreme outliers, they are completely thrown out while keeping sharp object edges untouched!</p>
+            <div class="real-world-box">📺 Used in: Cleaning old film reels, sensor noise removal, and transmission glitch cleanup.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-wand-magic"></i> Bilateral Filter: The Smartphone "Beauty Filter"</h6>
+            <p>The smartest smoothing filter available! Normal filters blur everything, including eyes and hair. The <strong>Bilateral Filter checks two things at once</strong>:</p>
+            <ul class="simple-steps-list">
+              <li>How close two pixels are geometrically (spatial distance).</li>
+              <li>How similar their colors are (intensity difference).</li>
+            </ul>
+            <p>It smoothly blurs flat regions (like skin texture), but <strong>instantly stops blurring</strong> whenever it hits a sharp boundary (like an eye, eyebrow, or shirt collar).</p>
+            <div class="real-world-box">🤳 Used in: Instagram face filters, skin softening, and cartoon rendering.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: Image Inpainting -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab5">
+      <div class="practical-banner">
+        <span class="tag">Practical 05</span>
+        <h3>Image Inpainting (Telea & Navier-Stokes Methods)</h3>
+        <p>Restore damaged or scratched regions of an image by propagating boundary information smoothly inward using Alexandru Telea (Fast Marching) and Navier-Stokes (Fluid Dynamics) PDE approaches.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-paintbrush"></i> Restoration Tools</h4>
+          
+          <div class="control-group">
+            <label for="p5_method">Inpainting Algorithm:</label>
+            <select id="p5_method">
+              <option value="telea">Alexandru Telea (FMM / Gradient Weighted)</option>
+              <option value="ns">Navier-Stokes (Fluid Flow Transport)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p5_radius">Inpainting Neighborhood Radius:</label>
+            <div class="slider-container">
+              <input type="range" id="p5_radius" min="2" max="10" value="3">
+              <span id="p5_radius_val" class="slider-val">3 px</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Damaged Mask Setup:</label>
+            <button id="p5_add_defect" class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;">
+              <i class="fa-solid fa-burst"></i> Inject Sample Cracks & Scratches
+            </button>
+            <small>Or click and drag directly on the input canvas to paint custom scratches with your mouse/stylus!</small>
+          </div>
+
+          <button id="p5_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-hammer"></i> Restore Damaged Image
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Damaged Image (Interactive Scratch Canvas)</span>
+                <span class="slider-val" style="background:#fee2e2; color:#ef4444;">Paint with mouse</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p5_src_canvas" style="cursor: crosshair;"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Inpainted Restored Result</span>
+                <span id="p5_status_badge" class="slider-val">Clean</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p5_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-paintbrush" style="color: #4f46e5;"></i> Image Inpainting (Digital Restoration) in Simple Words</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-wand-magic-sparkles"></i> 1. What is Image Inpainting?</h6>
+            <p>Inpainting is the art of <strong>digitally repairing torn, scratched, or damaged parts of an image</strong> so that the fix blends in invisibly — exactly like Photoshop's <em>Content-Aware Fill</em> or the "Magic Eraser" on modern smartphones.</p>
+            <p>You mark where the damage is (like painting over a scratch with your mouse), and the computer fills in that missing hole using colors and patterns from the surrounding healthy borders.</p>
+            <div class="real-world-box">🏛️ Used in: Restoring 100-year-old museum photos, removing unwanted tourists, and erasing timestamps.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> 2. Alexandru Telea Method (Fast Marching)</h6>
+            <p>Imagine standing on the clean, undamaged edge of a scratch. The <strong>Telea algorithm marches inward layer-by-layer</strong> from the outside in:</p>
+            <ul class="simple-steps-list">
+              <li>It looks at the nearest healthy boundary pixels.</li>
+              <li>It computes an average color, giving higher importance to closer pixels and pixels that line up with edges.</li>
+              <li>It fills the outer ring of the hole, then takes one step further inside until the scratch disappears!</li>
+            </ul>
+            <div class="real-world-box">⚡ Great for: Thin scratches, small dust specks, and telephone wire removal.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-water"></i> 3. Navier-Stokes Method (Fluid Transport)</h6>
+            <p>This ingenious method borrows equations from <strong>fluid physics (how water and smoke flow)</strong>!</p>
+            <p>It treats lines of constant brightness (called isophotes) like streams of gentle water. It guides those lines smoothly across the missing gap so that curved borders, shapes, and contours continue naturally without getting blurred or cut off.</p>
+            <div class="real-world-box">🌊 Great for: Larger holes and textured surfaces where edge continuity matters.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: Lossless Compression -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab6">
+      <div class="practical-banner">
+        <span class="tag">Practical 06</span>
+        <h3>Lossless Image Compression & Metrics Evaluation</h3>
+        <p>Implement Run-Length Encoding (RLE) and Huffman Variable-Length Coding, calculate Shannon entropy, and measure original vs compressed file sizes, compression ratio (CR), and savings percentage.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-file-zipper"></i> Compression Setup</h4>
+          
+          <div class="control-group">
+            <label for="p6_algorithm">Compression Technique:</label>
+            <select id="p6_algorithm">
+              <option value="rle">Run-Length Encoding (RLE)</option>
+              <option value="huffman">Huffman Variable-Length Coding</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p6_channel">Target Channel Stream:</label>
+            <select id="p6_channel">
+              <option value="gray">Grayscale Intensity Stream</option>
+              <option value="binary">Binarized Image (Maximum RLE Redundancy)</option>
+            </select>
+          </div>
+
+          <button id="p6_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-compress"></i> Compress & Verify
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Source Image Stream</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p6_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Decompressed Image (Lossless Verification)</span>
+                <span id="p6_lossless_badge" class="slider-val" style="background:#dcfce7; color:#166534;">100% Match</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p6_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantitative Compression Metrics Dashboard -->
+          <div class="metrics-row">
+            <div class="metric-pill">
+              <div class="metric-label">Original Size</div>
+              <div class="metric-value" id="p6_orig_size">102.4 KB</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Compressed Size</div>
+              <div class="metric-value" id="p6_comp_size">42.8 KB</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Compression Ratio (CR)</div>
+              <div class="metric-value" id="p6_cr">2.39 : 1</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Space Savings</div>
+              <div class="metric-value" id="p6_saving">58.2%</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Shannon Entropy (H)</div>
+              <div class="metric-value" id="p6_entropy">5.42 bpp</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; background: #f8fafc; border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-family: monospace;">
+            <strong>Lossless Verification:</strong> <span id="p6_verify_msg">Bit-for-bit reconstruction identical. Maximum Absolute Error (MAE) = 0.000000.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-file-zipper" style="color: #10b981;"></i> Lossless Compression Explained in Plain English</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-shield-halved"></i> 1. What Does "Lossless" Mean?</h6>
+            <p>Lossless compression means shrinking a file's size so it downloads faster and saves disk space, <strong>without losing a single pixel or grain of quality</strong>!</p>
+            <p>When you uncompress the file, the decompressed image is <strong>100% bit-for-bit identical</strong> to the original (Mean Absolute Error = 0.000000). Contrast this with JPEG, which is "lossy" because it permanently throws away subtle visual data.</p>
+            <div class="real-world-box">🏥 Essential in: Medical MRI/CT scans (where losing detail could cause misdiagnosis) and PNG logos.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-bars-staggered"></i> 2. Run-Length Encoding (RLE)</h6>
+            <p>Imagine reading a row of pixels:</p>
+            <p style="font-family: monospace; background: #fff; padding: 0.3rem; border-radius: 4px; font-size: 0.8rem;">White, White, White, White, White, Black, Black</p>
+            <p>Instead of writing all 7 words, RLE simply stores: <strong>(5, White), (2, Black)</strong>.</p>
+            <p>On binary graphics, logos, and cartoon images with large solid patches, RLE achieves enormous compression ratios exceeding <strong>4 : 1 (saving over 75% file size)</strong>!</p>
+            <div class="real-world-box">📠 Used in: Fax machines, PDF documents, and icon formats (BMP/GIF/TIFF).</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-tree"></i> 3. Huffman Coding & Shannon Entropy</h6>
+            <p><strong>Huffman Coding:</strong> Just like Morse code gives a single dot '.' to the letter 'E' because it's the most common letter, Huffman assigns short bit codes to frequent pixel colors, and longer codes to rare colors.</p>
+            <p><strong>Shannon Entropy:</strong> Think of entropy as the "absolute speed limit" of compression — it calculates the minimum number of bits per pixel required by the laws of information theory.</p>
+            <div class="real-world-box">📦 Used in: ZIP files, GZIP web compression, and PNG compressors.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 7: Morphological Operations -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab7">
+      <div class="practical-banner">
+        <span class="tag">Practical 07</span>
+        <h3>Morphological Operations on Binary Images</h3>
+        <p>Examine fundamental mathematical morphology operators: Erosion, Dilation, Opening, Closing, Morphological Gradient, and Boundary Extraction using customizable Structuring Elements (Square, Cross, Disk).</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-shapes"></i> Morphology Operators</h4>
+          
+          <div class="control-group">
+            <label for="p7_operation">Operation:</label>
+            <select id="p7_operation">
+              <option value="erode">Erosion (Shrink Foreground)</option>
+              <option value="dilate">Dilation (Expand Foreground)</option>
+              <option value="open">Opening (Erosion followed by Dilation)</option>
+              <option value="close">Closing (Dilation followed by Erosion)</option>
+              <option value="gradient">Morphological Gradient (Dilation - Erosion)</option>
+              <option value="boundary">Internal Boundary Extraction (A - Erode(A))</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p7_se_shape">Structuring Element (SE):</label>
+            <select id="p7_se_shape">
+              <option value="square">Square Structuring Element</option>
+              <option value="cross">Cross / Plus (+) Structuring Element</option>
+              <option value="disk">Disk / Circle Structuring Element</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p7_se_size">Kernel Size:</label>
+            <div class="slider-container">
+              <input type="range" id="p7_se_size" min="3" max="9" step="2" value="3">
+              <span id="p7_se_size_val" class="slider-val">3 &times; 3</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="p7_iterations">Iterations:</label>
+            <div class="slider-container">
+              <input type="range" id="p7_iterations" min="1" max="5" value="1">
+              <span id="p7_iterations_val" class="slider-val">1</span>
+            </div>
+          </div>
+
+          <button id="p7_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-cubes"></i> Execute Morphology
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Input Binary Image</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p7_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Morphological Output</span>
+                <span id="p7_status_badge" class="slider-val">Complete</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p7_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-shapes" style="color: #4f46e5;"></i> Binary Morphology Explained in Everyday Language</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-compress"></i> 1. Erosion (Shrink Shapes)</h6>
+            <p>Erosion gently <strong>eats away the outer boundaries of white objects</strong>, peeling away their outer layer like peeling an onion:</p>
+            <ul class="simple-steps-list">
+              <li>It shrinks objects slightly.</li>
+              <li>It wipes out tiny, random background white noise specks.</li>
+              <li>It breaks thin bridges that accidentally connect two separate objects!</li>
+            </ul>
+            <div class="real-world-box">🔬 Used in: Separating overlapping blood cells under a microscope.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-expand"></i> 2. Dilation (Grow Shapes)</h6>
+            <p>Dilation is the exact opposite of erosion: it <strong>expands white objects outward</strong> by growing their borders:</p>
+            <ul class="simple-steps-list">
+              <li>It makes objects slightly thicker.</li>
+              <li>It fills in small dark pinholes and internal cavities.</li>
+              <li>It bridges broken edges and reconnects severed lines.</li>
+            </ul>
+            <div class="real-world-box">📜 Used in: Reconnecting broken letters in historical document scans.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-arrows-rotate"></i> 3. Opening, Closing & Boundary Extraction</h6>
+            <p><strong>Opening (Erode then Dilate):</strong> The ultimate shape cleaner! It erases small outer noise bumps without permanently shrinking the main object size.</p>
+            <p><strong>Closing (Dilate then Erode):</strong> The master hole-filler! It plugs internal gaps and cracks without enlarging the overall object.</p>
+            <p><strong>Boundary Extraction:</strong> Subtracts the eroded shape from the original shape, leaving behind only the razor-sharp 1-pixel outer outline!</p>
+            <div class="real-world-box">🚗 Used in: Car license plate recognition and robotic part contour tracing.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 8: Object Detection using Correlation -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab8">
+      <div class="practical-banner">
+        <span class="tag">Practical 08</span>
+        <h3>Object Detection using the Correlation Principle</h3>
+        <p>Locate target objects inside an image using 2D Normalized Cross-Correlation (NCC) and Sum of Squared Differences (SSD) template matching, generating peak correlation scores and detection bounding boxes.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-crosshairs"></i> Object Detection Inputs</h4>
+          
+          <!-- INPUT 1: Full Image -->
+          <div class="control-group" style="background: #f8fafc; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 0.8rem;">
+            <label style="color: var(--primary); font-weight: 700;">
+              <i class="fa-solid fa-image"></i> 1st Input: Full Image (Search Scene)
+            </label>
+            <div style="margin-top: 0.4rem;">
+              <label for="p8_full_preset" style="font-size: 0.78rem; font-weight: 600;">Choose Sample Scene:</label>
+              <select id="p8_full_preset">
+                <option value="medal_scene">Sample 1: Medal in Geometric Scene</option>
+                <option value="landscape">Sample 2: Country Landscape with House & Sun</option>
+                <option value="shapes">Sample 3: Geometric Shapes & Rings</option>
+              </select>
+            </div>
+            <div style="margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+              <label class="btn btn-secondary" style="cursor: pointer; padding: 0.35rem 0.6rem; font-size: 0.78rem;">
+                <i class="fa-solid fa-upload"></i> Upload Full Image
+                <input type="file" id="p8_full_uploader" accept="image/*" style="display: none;">
+              </label>
+              <span id="p8_full_dim" class="slider-val" style="font-size: 0.75rem;">320 &times; 240 px</span>
+            </div>
+          </div>
+
+          <!-- INPUT 2: Target Image -->
+          <div class="control-group" style="background: #f0fdf4; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid #bbf7d0; margin-bottom: 0.8rem;">
+            <label style="color: #166534; font-weight: 700;">
+              <i class="fa-solid fa-bullseye"></i> 2nd Input: Target Image (Template to Detect)
+            </label>
+            <div style="margin-top: 0.4rem;">
+              <label for="p8_target_preset" style="font-size: 0.78rem; font-weight: 600;">Choose Sample Target:</label>
+              <select id="p8_target_preset">
+                <option value="medal">Target 1: Stylized 'IP' Medal Badge (64&times;64)</option>
+                <option value="sun">Target 2: Golden Sun Badge (64&times;64)</option>
+                <option value="door">Target 3: House Door (36&times;46)</option>
+                <option value="ring">Target 4: Geometric Ring (64&times;64)</option>
+              </select>
+            </div>
+            <div style="margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+              <label class="btn btn-secondary" style="cursor: pointer; padding: 0.35rem 0.6rem; font-size: 0.78rem; background: #fff;">
+                <i class="fa-solid fa-upload"></i> Upload Target Image
+                <input type="file" id="p8_target_uploader" accept="image/*" style="display: none;">
+              </label>
+              <span id="p8_target_dim" class="slider-val" style="font-size: 0.75rem; background: #dcfce7; color: #166534;">64 &times; 64 px</span>
+            </div>
+            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #86efac;">
+              <button id="p8_drag_btn" type="button" class="btn btn-secondary" style="width: 100%; font-size: 0.78rem; padding: 0.4rem 0.6rem; background: #fff; color: #166534; border: 1px solid #86efac; font-weight: 600; cursor: pointer;">
+                <i class="fa-solid fa-crop-simple"></i> Crop Target by Dragging on Full Image
+              </button>
+              <div id="p8_drag_hint" style="font-size: 0.74rem; color: #15803d; margin-top: 0.3rem; display: none; line-height: 1.3;">
+                <i class="fa-solid fa-circle-info"></i> Click and drag a rectangle over any region in the full image canvas below!
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.6rem;">
+              <canvas id="p8_template_canvas" width="64" height="64" style="border: 2px solid var(--primary); border-radius: 4px; background: #fff;"></canvas>
+              <span style="font-size: 0.78rem; color: #374151;" id="p8_target_label">Template preview (Search Target)</span>
+            </div>
+          </div>
+
+          <!-- Matching Method -->
+          <div class="control-group">
+            <label for="p8_method">Matching Metric:</label>
+            <select id="p8_method">
+              <option value="ncc">Normalized Cross-Correlation (NCC) [Recommended]</option>
+              <option value="ssd">Sum of Squared Differences (SSD)</option>
+            </select>
+          </div>
+
+          <button id="p8_apply" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            <i class="fa-solid fa-magnifying-glass"></i> Detect Target Object
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Search Scene with Detection Box</span>
+                <span id="p8_match_score" class="slider-val" style="background:#dcfce7; color:#166534;">Score: --</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p8_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>2D Correlation Response Surface Heatmap</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p8_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-pill">
+              <div class="metric-label">Detected X Position</div>
+              <div class="metric-value" id="p8_pos_x">--</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Detected Y Position</div>
+              <div class="metric-value" id="p8_pos_y">--</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Peak Correlation &gamma;</div>
+              <div class="metric-value" id="p8_peak_val">--</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value" id="p8_conf">--</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-crosshairs" style="color: #ef4444;"></i> Object Detection via Correlation in Plain English</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-magnifying-glass"></i> 1. How Does Template Matching Work?</h6>
+            <p>Imagine holding a small cutout picture of a logo or medal badge (the <strong>Template</strong>). You slide that cutout across a large scene photo, pixel by pixel, row by row — exactly like sliding a magnifying glass searching for a matching pattern.</p>
+            <p>At every single location, the computer compares the pixel colors underneath and calculates a <strong>match similarity score</strong>.</p>
+            <div class="real-world-box">🔍 Used in: Quality control in manufacturing (checking if a chip is placed correctly on a circuit board).</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-percent"></i> 2. What is Normalized Cross-Correlation (NCC)?</h6>
+            <p>Ordinary subtraction fails if the photo is slightly darker or brighter than the template. <strong>Normalized Cross-Correlation (NCC) is immune to lighting changes!</strong></p>
+            <p>It grades the similarity on a clear scale from <strong>-1.0 (completely opposite) to +1.0 (perfect 100% match)</strong>. The spot where the score peaks is where the object is located, marked by our green bounding box!</p>
+            <div class="real-world-box">🏷️ Used in: Barcode scanners and Google Lens reverse image search.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-fire"></i> 3. What Does the Thermal Heatmap Show?</h6>
+            <p>The 2D heatmap displays the correlation score across the entire image:</p>
+            <ul class="simple-steps-list">
+              <li><strong>Cold Blue / Purple Areas:</strong> Low correlation (background and distractors that don't look like our target).</li>
+              <li><strong>Glowing Red / Yellow Peak:</strong> A sharp mountain peak pointing directly to where the target was successfully recognized!</li>
+            </ul>
+            <div class="real-world-box">🎯 Used in: Radar tracking, fingerprint matching, and biometric security.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 9: Color Spaces -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab9">
+      <div class="practical-banner">
+        <span class="tag">Practical 09</span>
+        <h3>Color Space Conversions (RGB, HSV, YCrCb, CIELAB)</h3>
+        <p>Convert color images across RGB, HSV (Hue-Saturation-Value), YCrCb (Luminance-Chrominance), and CIELAB ($L^*a^*b^*$), isolating individual channels to observe color perception encoding.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-palette"></i> Color Space Selector</h4>
+          
+          <div class="control-group">
+            <label for="p9_colorspace">Target Color Space:</label>
+            <select id="p9_colorspace">
+              <option value="rgb">RGB (Red, Green, Blue)</option>
+              <option value="hsv">HSV (Hue, Saturation, Value)</option>
+              <option value="ycrcb">YCrCb (Luma, Red-Difference, Blue-Difference)</option>
+              <option value="lab">CIELAB (Lightness L*, a*, b*)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="p9_view_mode">Channel Display Mode:</label>
+            <select id="p9_view_mode">
+              <option value="isolated">Decomposed Channels</option>
+              <option value="reconstructed">Full Space Reconstruction</option>
+            </select>
+          </div>
+
+          <button id="p9_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-eye-dropper"></i> Decompose Channels
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Original Color Image (RGB)</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p9_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span id="p9_dst_label">Color Model Representation</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p9_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Separate Channels Display -->
+          <div style="margin-top: 1.25rem;">
+            <h5 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;" id="p9_channel_title">Isolated Channel Maps:</h5>
+            <div class="channels-grid">
+              <div class="channel-card">
+                <canvas id="p9_ch1_canvas"></canvas>
+                <span id="p9_ch1_name">Channel 1</span>
+              </div>
+              <div class="channel-card">
+                <canvas id="p9_ch2_canvas"></canvas>
+                <span id="p9_ch2_name">Channel 2</span>
+              </div>
+              <div class="channel-card">
+                <canvas id="p9_ch3_canvas"></canvas>
+                <span id="p9_ch3_name">Channel 3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-palette" style="color: #4f46e5;"></i> Why Do We Have Multiple Color Models? (Explained Simply)</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-display"></i> 1. RGB (Screens & Hardware)</h6>
+            <p><strong>Red, Green, and Blue</strong> match the physical phosphor LEDs inside your monitor or phone screen. When you mix all three at full strength (255, 255, 255), you get white.</p>
+            <p><strong>The Big Problem:</strong> Brightness and color are mixed together! If a shadow falls across a person's face, the R, G, and B numbers all drop together, making it hard for computers to track skin or objects under changing light.</p>
+            <div class="real-world-box">💻 Used in: Computer monitors, digital cameras, and web design (CSS).</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-eye-dropper"></i> 2. HSV (How Humans Think of Color)</h6>
+            <p>HSV separates color into three intuitive components:</p>
+            <ul class="simple-steps-list">
+              <li><strong>Hue (H):</strong> The pure color shade on a 360° color wheel (0° = Red, 120° = Green, 240° = Blue).</li>
+              <li><strong>Saturation (S):</strong> How rich or pale the color is (from dull gray to vivid neon).</li>
+              <li><strong>Value (V):</strong> The brightness level from pitch dark to bright.</li>
+            </ul>
+            <p><strong>Why it's awesome:</strong> You can track a red sports car or football even under dark stadium shadows because its <em>Hue</em> never changes!</p>
+            <div class="real-world-box">⚽ Used in: Object tracking in sports analytics and paint picker palettes.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-tv"></i> 3. YCrCb & CIELAB (TV, JPEG & Paint)</h6>
+            <p><strong>YCrCb (Digital TV & JPEG):</strong> Separates pure brightness (Y) from color differences (Cr red, Cb blue). Human eyes are very sensitive to brightness detail, but sloppy with color blur. JPEG saves 50% file size by compressing the Cr/Cb channels heavily without humans noticing!</p>
+            <p><strong>CIELAB ($L^*a^*b^*$):</strong> Designed by scientists so the mathematical distance between two colors equals the exact visual difference perceived by human eyes.</p>
+            <div class="real-world-box">📺 Used in: Netflix video streaming, JPEG photo compression, and textile fabric dyeing.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 10: Edge Detection Techniques -->
+    <!-- ========================================================================= -->
+    <section class="tab-panel" id="tab10">
+      <div class="practical-banner">
+        <span class="tag">Practical 10</span>
+        <h3>Edge Detection (Sobel, Prewitt & Canny Methods)</h3>
+        <p>Detect structural intensity discontinuities using 1st-order gradient operators (Sobel, Prewitt) and contrast against the multi-stage optimal Canny Edge Detector.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="controls-card">
+          <h4><i class="fa-solid fa-bezier-curve"></i> Edge Detectors</h4>
+          
+          <div class="control-group">
+            <label for="p10_detector">Detector Type:</label>
+            <select id="p10_detector">
+              <option value="canny">Canny Edge Detector (Multi-Stage Optimal)</option>
+              <option value="sobel">Sobel Gradient Operator</option>
+              <option value="prewitt">Prewitt Gradient Operator</option>
+            </select>
+          </div>
+
+          <div id="p10_subcontrols">
+            <!-- Canny thresholds / gradient direction selectors -->
+          </div>
+
+          <button id="p10_apply" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-draw-polygon"></i> Detect Edges
+          </button>
+        </div>
+
+        <div class="display-card">
+          <div class="canvas-comparison-grid">
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span>Input Grayscale Image</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p10_src_canvas"></canvas>
+              </div>
+            </div>
+            <div class="canvas-box">
+              <div class="canvas-header">
+                <span id="p10_dst_label">Canny Edge Map</span>
+                <span id="p10_status_badge" class="slider-val">Detected</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="p10_dst_canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side-by-side gradient components or comparison channels -->
+          <div style="margin-top: 1.25rem;">
+            <h5 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Multi-Detector Side-by-Side Comparison:</h5>
+            <div class="channels-grid">
+              <div class="channel-card">
+                <canvas id="p10_cmp_sobel"></canvas>
+                <span>Sobel Gradient</span>
+              </div>
+              <div class="channel-card">
+                <canvas id="p10_cmp_prewitt"></canvas>
+                <span>Prewitt Gradient</span>
+              </div>
+              <div class="channel-card">
+                <canvas id="p10_cmp_canny"></canvas>
+                <span>Canny Optimal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h5 style="margin-bottom: 0.8rem;"><i class="fa-solid fa-bezier-curve" style="color: #4f46e5;"></i> Edge Detection Explained in Simple Words</h5>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h6><i class="fa-solid fa-shapes"></i> 1. What is an Edge?</h6>
+            <p>An edge is simply a boundary where <strong>brightness changes sharply</strong> (for example, where a dark door meets a bright white wall). Detecting edges is how computers "see" object outlines, shapes, and silhouettes.</p>
+            <p>Once a computer finds the edges of an object, it can recognize what the object is, measure its size, or track its movement.</p>
+            <div class="real-world-box">🚗 Used in: Self-driving cars finding lane markings on the highway.</div>
+          </div>
+
+          <div class="concept-card accent">
+            <h6><i class="fa-solid fa-chart-line"></i> 2. Sobel & Prewitt: The Quick Gradients</h6>
+            <p>Sobel and Prewitt are classic <strong>1st-generation edge detectors</strong>:</p>
+            <ul class="simple-steps-list">
+              <li>They calculate how rapidly colors change horizontally ($G_x$) and vertically ($G_y$).</li>
+              <li>Then they combine both directions into a single gradient map.</li>
+            </ul>
+            <p><strong>The Catch:</strong> They produce wide, fuzzy, thick edges that are easily contaminated by camera noise, requiring manual threshold cleanup.</p>
+            <div class="real-world-box">⚡ Great for: Ultra-fast edge scanning on simple graphics and microcontrollers.</div>
+          </div>
+
+          <div class="concept-card success">
+            <h6><i class="fa-solid fa-crown"></i> 3. Canny Edge Detector: The Gold Standard!</h6>
+            <p>Invented by John F. Canny, this is the most popular detector in the world because it uses <strong>4 disciplined stages</strong>:</p>
+            <ol class="simple-steps-list">
+              <li><strong>Soft Blur:</strong> Uses a Gaussian filter to clean camera grain first so random noise won't be mistaken for edges.</li>
+              <li><strong>Find Gradients:</strong> Computes the gradient slope and angle at every pixel.</li>
+              <li><strong>Thinning (Non-Maximum Suppression):</strong> Shaves thick fuzzy lines down to a <strong>razor-sharp 1-pixel-wide outline</strong> by keeping only the true peak pixel!</li>
+              <li><strong>Smart Linking (Hysteresis):</strong> Uses two cutoffs (High and Low). Strong edges are kept, and faint edges are kept only if they connect to a strong edge!</li>
+            </ol>
+            <div class="real-world-box">👑 Used in: Medical MRI tumor outlines, robotics, facial feature detection, and augmented reality.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <p><strong>Digital Image Processing Virtual Laboratory</strong></p>
+      <p>Department of Computer Science & Engineering | S. B. Jain Institute of Technology, Management & Research, Nagpur</p>
+      <p>Developed by: <strong>Manish Kathane</strong> (USN: CS24091) | V Semester B.Tech CSE (Academic Session 2026-27)</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="sample-images.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
