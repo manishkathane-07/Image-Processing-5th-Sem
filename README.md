@@ -19,24 +19,54 @@ All operations execute **100% client-side** directly in your browser using HTML5
 
 ## 🚀 Live Demo & Deployment
 
-- **Live Web App:** `https://<your-username>.github.io/<your-repo-name>/`
-- **GitHub Repository:** `https://github.com/<your-username>/<your-repo-name>`
+### Option A: Deploying with Git & Vercel (Recommended)
 
-### Deploying to GitHub Pages in 2 Minutes:
-1. Initialize git and commit files:
+#### 1. Push your project to GitHub:
+If you haven't created a GitHub repository yet:
+1. Go to [github.com/new](https://github.com/new) and create a repository (e.g., `digital-image-processing-lab`).
+2. Run the following commands in your project terminal:
    ```bash
-   git init
-   git add .
-   git commit -m "Complete Digital Image Processing Virtual Lab with 10 Practicals"
-   git branch -M main
    git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git branch -M main
    git push -u origin main
    ```
+
+#### 2. Deploy on Vercel:
+1. Go to [vercel.com](https://vercel.com) and sign in with your GitHub account.
+2. Click **"Add New..."** &rarr; **"Project"**.
+3. Under **"Import Git Repository"**, find your repository and click **"Import"**.
+4. Leave all settings at their defaults:
+   - **Framework Preset:** *Other* (detected automatically via `vercel.json`)
+   - **Root Directory:** `./`
+5. Click **"Deploy"**.
+6. In ~15 seconds, your virtual laboratory will be live at a custom URL like:
+   `https://<your-project-name>.vercel.app`
+
+*(Any time you push changes to GitHub via `git push`, Vercel will automatically re-deploy your site!)*
+
+---
+
+### Option B: Deploying directly with Vercel CLI (Instant)
+
+Run this one command directly in PowerShell/Terminal inside `d:\IP\Post lab`:
+```bash
+npx vercel --prod
+```
+- When prompted, press `Enter` to confirm:
+  - *Set up and deploy?* `y`
+  - *Which scope?* (Select your Vercel account)
+  - *Link to existing project?* `n`
+  - *What’s your project’s name?* (Press Enter or type a name)
+  - *In which directory is your code located?* `./`
+- Your production URL will be displayed in the terminal!
+
+---
+
+### Option C: Deploying to GitHub Pages
+1. Push to GitHub as described above.
 2. Go to your repository on **GitHub** &rarr; **Settings** &rarr; **Pages**.
 3. Under **Build and deployment** &rarr; **Branch**, select `main` and root `/`, then click **Save**.
-4. Within 60 seconds, your site will be live at:
-   `https://<your-username>.github.io/<your-repo-name>/`
-5. Generate static QR codes for your GitHub repo and Deployment URL at [QRCode Monkey](https://www.qrcode-monkey.com/) and paste them into Page 2 of your report!
+4. Your site will be live at: `https://<your-username>.github.io/<your-repo-name>/`
 
 ---
 
