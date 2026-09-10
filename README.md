@@ -17,30 +17,22 @@ All operations execute **100% client-side** directly in your browser using HTML5
 
 ---
 
-## 🚀 Live Demo & Deployment
+- **GitHub Repository:** [https://github.com/manishkathane-07/Image-Processing-5th-Sem](https://github.com/manishkathane-07/Image-Processing-5th-Sem)
 
 ### Option A: Deploying with Git & Vercel (Recommended)
 
-#### 1. Push your project to GitHub:
-If you haven't created a GitHub repository yet:
-1. Go to [github.com/new](https://github.com/new) and create a repository (e.g., `digital-image-processing-lab`).
-2. Run the following commands in your project terminal:
-   ```bash
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git branch -M main
-   git push -u origin main
-   ```
+Your code is already pushed to GitHub! Now complete the final 1-minute step on Vercel:
 
-#### 2. Deploy on Vercel:
+#### Deploy on Vercel:
 1. Go to [vercel.com](https://vercel.com) and sign in with your GitHub account.
 2. Click **"Add New..."** &rarr; **"Project"**.
-3. Under **"Import Git Repository"**, find your repository and click **"Import"**.
+3. Under **"Import Git Repository"**, find **`Image-Processing-5th-Sem`** and click **"Import"**.
 4. Leave all settings at their defaults:
    - **Framework Preset:** *Other* (detected automatically via `vercel.json`)
    - **Root Directory:** `./`
 5. Click **"Deploy"**.
 6. In ~15 seconds, your virtual laboratory will be live at a custom URL like:
-   `https://<your-project-name>.vercel.app`
+   `https://image-processing-5th-sem.vercel.app`
 
 *(Any time you push changes to GitHub via `git push`, Vercel will automatically re-deploy your site!)*
 
