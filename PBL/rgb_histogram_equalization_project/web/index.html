@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB Histogram Equalization for Landscape Photography </title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- MathJax 3 for Rendering Mathematical Equations -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header / Navbar (White & Gray Theme) -->
+    <header class="border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-600 rounded-lg text-white shadow">
+                    <i class="fa-solid fa-chart-simple text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-gray-900 tracking-tight">RGB Histogram Equalization </h1>
+                    <p class="text-xs text-indigo-600 font-semibold">Image Processing [N-PECCS502T]</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 text-xs">
+                <div class="bg-gray-50 px-3.5 py-1.5 rounded-full border border-gray-200 shadow-sm">
+                    <span class="text-gray-500 font-medium">Authors:</span> 
+                    <span class="font-bold text-gray-900">Lakshansh G. (CS24090) & Manish K. (CS24091)</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 space-y-6">
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-gray-200 space-x-2 text-sm font-medium bg-white px-3 pt-2 rounded-t-xl border-x border-t border-gray-200">
+            <button id="tab-studio" class="tab-btn px-4 py-2.5 border-b-2 border-indigo-600 text-indigo-600 font-bold flex items-center space-x-2">
+                <i class="fa-solid fa-sliders text-indigo-600"></i>
+                <span>Interactive Processing Studio</span>
+            </button>
+            <button id="tab-overview" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-gray-500 hover:text-gray-900 flex items-center space-x-2">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Topic Overview & Methods/Filters</span>
+            </button>
+            <button id="tab-math" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-gray-500 hover:text-gray-900 flex items-center space-x-2">
+                <i class="fa-solid fa-square-root-variable"></i>
+                <span>Mathematical Formulas</span>
+            </button>
+            <button id="tab-literature" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-gray-500 hover:text-gray-900 flex items-center space-x-2">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Research Papers (6 Citations)</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: INTERACTIVE STUDIO -->
+        <section id="view-studio" class="space-y-6">
+            
+            <!-- Dedicated Drag & Drop Upload Panel -->
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-gray-700 flex items-center space-x-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-indigo-600 text-base"></i>
+                        <span>Upload Landscape Photo</span>
+                    </h3>
+                    <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200">User Image Upload Only</span>
+                </div>
+
+                <!-- Large Drag-and-Drop Dropzone -->
+                <div id="dropzone" class="border-2 border-dashed border-gray-300 hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50/40 rounded-xl p-6 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
+                    <div class="p-3 bg-white border border-gray-200 rounded-full shadow-sm text-indigo-600">
+                        <i class="fa-solid fa-image text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-800">Click to Browse or Drag & Drop Landscape Photo</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Supports PNG, JPG, JPEG, WEBP landscape photos</p>
+                    </div>
+                    <span id="upload-filename" class="text-xs font-semibold text-indigo-600 bg-white border border-indigo-200 px-3 py-1 rounded-full hidden">
+                        No file chosen
+                    </span>
+                    <input type="file" id="custom-upload" accept="image/*" class="hidden">
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Equalization Method -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1 text-indigo-600"></i> Equalization Method
+                        </label>
+                        <select id="method-select" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-indigo-500 font-medium">
+                            <option value="rgb_he">Direct RGB Channels HE (Proposed)</option>
+                            <option value="hsv_v">HSV Decoupled (V-Channel HE)</option>
+                            <option value="ycrcb_y">YCrCb Decoupled (Y-Channel HE)</option>
+                            <option value="clahe">CLAHE (Adaptive Local HE)</option>
+                            <option value="raw">Original Raw Image (No HE)</option>
+                        </select>
+                    </div>
+
+                    <!-- Noise Injection -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                            <i class="fa-solid fa-triangle-exclamation mr-1 text-indigo-600"></i> Noise Model & Level
+                        </label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="noise-select" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 text-xs text-gray-900 font-medium">
+                                <option value="none">None (Clean)</option>
+                                <option value="gaussian">Gaussian Noise</option>
+                                <option value="salt_pepper">Salt & Pepper</option>
+                                <option value="speckle">Speckle Noise</option>
+                            </select>
+                            <input type="range" id="noise-level" min="0" max="0.1" step="0.01" value="0.02" class="accent-indigo-600 self-center">
+                        </div>
+                        <div class="flex justify-between text-[10px] text-gray-500 font-medium">
+                            <span>Noise Type</span>
+                            <span id="noise-val-disp">Level: 0.02</span>
+                        </div>
+                    </div>
+
+                    <!-- Spatial Filter & Kernel Size -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                            <i class="fa-solid fa-filter mr-1 text-indigo-600"></i> Spatial Filter & Kernel Size
+                        </label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="filter-select" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 text-xs text-gray-900 font-medium">
+                                <option value="none">None (No Filter)</option>
+                                <option value="mean">Mean (Box) Filter</option>
+                                <option value="gaussian">Gaussian Filter</option>
+                                <option value="median">Median Filter</option>
+                                <option value="bilateral">Bilateral Filter</option>
+                                <option value="sharpen">Unsharp Sharpen</option>
+                            </select>
+                            <select id="kernel-select" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-2 text-xs text-gray-900 font-medium">
+                                <option value="3">Kernel 3x3</option>
+                                <option value="5">Kernel 5x5</option>
+                                <option value="7">Kernel 7x7</option>
+                                <option value="9">Kernel 9x9</option>
+                            </select>
+                        </div>
+                        <div class="text-[10px] text-gray-500 font-medium">
+                            <span>Applies before Equalization</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Image Comparison Display (White & Gray Theme) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Original Image Card -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <h3 class="font-bold text-sm text-gray-900 flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                            <span>Uploaded Landscape Input</span>
+                        </h3>
+                        <span id="orig-dims" class="text-xs font-semibold text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded border border-gray-200">No Image Uploaded</span>
+                    </div>
+                    <div class="relative bg-gray-50 rounded-lg overflow-hidden border border-gray-300 h-80 flex items-center justify-center p-2">
+                        <img id="img-original" src="" alt="Uploaded Landscape Input" class="max-h-full max-w-full object-contain rounded border border-gray-200 shadow-sm hidden">
+                        <div id="placeholder-orig" class="text-center space-y-2 text-gray-400">
+                            <i class="fa-solid fa-image text-3xl"></i>
+                            <p class="text-xs font-medium">Please upload a landscape image above to begin processing</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processed Output Image Card -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <h3 class="font-bold text-sm text-indigo-700 flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                            <span>Equalized & Filtered Output</span>
+                        </h3>
+                        <span id="proc-method-badge" class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-3 py-0.5 rounded-full">
+                            RGB HE Direct
+                        </span>
+                    </div>
+                    <div class="relative bg-gray-50 rounded-lg overflow-hidden border border-gray-300 h-80 flex items-center justify-center p-2">
+                        <img id="img-processed" src="" alt="Processed Output" class="max-h-full max-w-full object-contain rounded border border-gray-200 shadow-sm hidden">
+                        <div id="placeholder-proc" class="text-center space-y-2 text-gray-400">
+                            <i class="fa-solid fa-wand-magic-sparkles text-3xl"></i>
+                            <p class="text-xs font-medium">Equalized result will appear here upon upload</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Performance Metrics Dashboard -->
+            <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-sm">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                    <div>
+                        <h3 class="font-bold text-base text-gray-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-gauge-high text-indigo-600"></i>
+                            <span>Performance Metrics & Quality Assessment</span>
+                        </h3>
+                        <p class="text-xs text-gray-500 font-medium">Complete statistical comparison suite (8 evaluation metrics)</p>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3.5 py-1.5 rounded-full" id="metric-exec-time">
+                        Exec Time: 0.0 ms
+                    </span>
+                </div>
+
+                <!-- Metric Cards Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
+                    
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">RMS Contrast</span>
+                        <span id="metric-rms" class="text-xl font-extrabold text-indigo-600">0.0</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Higher = Better</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">Shannon Entropy</span>
+                        <span id="metric-entropy" class="text-xl font-extrabold text-emerald-600">0.0 bits</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Max 8.0 bits</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">Mean Brightness</span>
+                        <span id="metric-mean" class="text-xl font-extrabold text-amber-600">0.0</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Scale [0-255]</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">AMBE Error</span>
+                        <span id="metric-ambe" class="text-xl font-extrabold text-rose-600">0.0</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Lower = Better</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">PSNR</span>
+                        <span id="metric-psnr" class="text-xl font-extrabold text-sky-600">0.0 dB</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Fidelity measure</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">SSIM</span>
+                        <span id="metric-ssim" class="text-xl font-extrabold text-purple-600">0.0</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Structural index [0-1]</span>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 space-y-1 shadow-xs">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider block font-bold">SNR</span>
+                        <span id="metric-snr" class="text-xl font-extrabold text-teal-600">0.0 dB</span>
+                        <span class="text-[9px] text-gray-400 font-medium block">Signal-to-noise</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Histogram Visualizer Charts -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Original RGB Histogram Chart -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+                    <h4 class="font-bold text-xs text-gray-700 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-area text-amber-500"></i>
+                        <span>Original Input RGB Channel Histogram</span>
+                    </h4>
+                    <div class="h-64 relative bg-gray-50 rounded-lg p-2 border border-gray-200">
+                        <canvas id="chart-orig-hist"></canvas>
+                    </div>
+                </div>
+
+                <!-- Equalized RGB Histogram Chart -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+                    <h4 class="font-bold text-xs text-gray-700 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-area text-emerald-600"></i>
+                        <span>Equalized RGB Channel Histogram & Spreading</span>
+                    </h4>
+                    <div class="h-64 relative bg-gray-50 rounded-lg p-2 border border-gray-200">
+                        <canvas id="chart-proc-hist"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: HUMAN-READABLE OVERVIEW & ALL METHODS/FILTERS -->
+        <section id="view-overview" class="hidden space-y-6">
+            <div class="bg-white border border-gray-200 rounded-xl p-6 space-y-8 shadow-sm">
+                
+                <!-- Topic Header & Accreditation -->
+                <div class="border-b border-gray-200 pb-4 flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">Topic Overview & Comprehensive User Guide</h2>
+                        <p class="text-sm text-indigo-600 font-semibold mt-0.5">Demystifying RGB Histogram Equalization, Color Space Decoupling, Spatial Filtering, and Quality Metrics.</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-right text-xs space-y-0.5">
+
+                        <p class="text-gray-500">Image Processing [N-PECCS502T] | Session 2026-2027</p>
+                        <p class="text-indigo-600 font-semibold">Authors: Lakshansh G. (CS24090) & Manish K. (CS24091)</p>
+                    </div>
+                </div>
+
+                <!-- SECTION 0: BACKGROUND & LANDSCAPE PHOTOGRAPHY CHALLENGE -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3 text-gray-700 text-sm leading-relaxed bg-indigo-50/40 p-5 rounded-xl border border-indigo-100">
+                        <h3 class="font-bold text-gray-900 text-base flex items-center space-x-2 border-b border-indigo-200 pb-2">
+                            <i class="fa-solid fa-mountain-sun text-indigo-600"></i>
+                            <span>The Landscape Photography Challenge</span>
+                        </h3>
+                        <p>
+                            Outdoor photographs taken in fog, atmospheric haze, heavy clouds, or harsh sunlight often look dull, flat, and washed out. Camera sensors capture these photos with pixel brightness values squished into a narrow range—hiding mountain ridge lines, pine foliage textures, and cloud formations.
+                        </p>
+                        <p>
+                            <strong>Histogram Equalization (HE)</strong> is an intelligent mathematical contrast stretching technique. It takes those squished brightness levels and spreads them evenly across the full spectrum—from pitch black (0) to bright white (255)—instantly bringing out hidden details.
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-3">
+                        <h3 class="font-bold text-gray-900 text-base border-b border-gray-200 pb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-indigo-600"></i>
+                            <span>Input vs. Output Plain-English Specifications</span>
+                        </h3>
+                        
+                        <div class="space-y-2 text-xs text-gray-700">
+                            <div class="flex justify-between py-1.5 border-b border-gray-200">
+                                <span class="font-bold text-gray-600">Input Image Format:</span>
+                                <span class="font-semibold text-gray-900">Standard 3-Color Photo (Red, Green, Blue channels)</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-gray-200">
+                                <span class="font-bold text-gray-600">Input Brightness State:</span>
+                                <span class="font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Squeezed / Narrow Range (Low Contrast)</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-gray-200">
+                                <span class="font-bold text-gray-600">Output Image State:</span>
+                                <span class="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Vibrant, Crisp & Full-Detail Photo</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="font-bold text-gray-600">Output Dynamic Range:</span>
+                                <span class="font-bold text-indigo-600">Full 0 (Darkest Shadow) to 255 (Brightest Peak)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 1: HOW IT WORKS STEP-BY-STEP (4-STEP VISUAL WORKFLOW) -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-2 flex items-center justify-between">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-diagram-project text-indigo-600"></i>
+                            <span>1. How Histogram Equalization Works (4-Step Workflow)</span>
+                        </span>
+                        <span class="text-xs text-gray-500 font-normal">Step-by-Step Processing Pipeline</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Step 1 -->
+                        <div class="bg-white border border-indigo-100 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">1</span>
+                                <i class="fa-solid fa-chart-simple text-indigo-400 text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-wider">Histogram Analysis</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                The engine counts how many pixels exist at each brightness level (0 to 255) across the Red, Green, and Blue channels to create a pixel frequency graph.
+                            </p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="bg-white border border-indigo-100 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">2</span>
+                                <i class="fa-solid fa-filter text-indigo-400 text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-wider">Noise Filtering (Optional)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Optional spatial filters (Gaussian, Median, Bilateral) clean up camera grain, sensor noise, or haze before contrast stretching occurs.
+                            </p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="bg-white border border-indigo-100 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">3</span>
+                                <i class="fa-solid fa-chart-line text-indigo-400 text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-wider">CDF Probability Mapping</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Calculates the Cumulative Distribution Function (CDF). This maps crowded gray levels into evenly spread values across the entire brightness scale.
+                            </p>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="bg-white border border-indigo-100 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">4</span>
+                                <i class="fa-solid fa-wand-magic-sparkles text-emerald-500 text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-wider">Channel Re-assembly</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Applies the new lookup values to each pixel and recombines the channels to produce a vivid, detailed, high-contrast landscape image.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION 2: ALL EQUALIZATION METHODS EXPLAINED -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
+                        <span>2. Equalization Enhancement Methods Compared</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        
+                        <!-- Method 1: Direct RGB HE -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs border-l-4 border-l-emerald-500">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <h4 class="font-bold text-sm text-indigo-700">Direct RGB Channel Equalization</h4>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">Primary Proposed Method</span>
+                            </div>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Stretches the brightness and contrast of the <strong>Red, Green, and Blue color channels independently</strong> using individual channel CDF lookup tables.
+                            </p>
+                            <div class="space-y-1.5 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Why use it:</strong> Maximizes detail recovery, mountain ridge contours, cloud textures, and foliage visibility across every color band.</p>
+                                <p>• <strong>Best for:</strong> Hazy mountains, foggy valleys, and underexposed landscape scenes.</p>
+                                <p>• <strong>Trade-off:</strong> May slightly alter natural color tones if one color channel dominates the scene.</p>
+                            </div>
+                        </div>
+
+                        <!-- Method 2: HSV Decoupled HE -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs border-l-4 border-l-sky-500">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <h4 class="font-bold text-sm text-indigo-700">HSV Color Space Equalization</h4>
+                                <span class="text-[10px] font-bold text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded">100% Hue Preserving</span>
+                            </div>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Converts the image to <strong>HSV (Hue, Saturation, Value)</strong> space and equalizes only the Brightness (Value) channel while locking original color hues.
+                            </p>
+                            <div class="space-y-1.5 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Why use it:</strong> Guarantees zero color distortion—the exact color tones of sunset skies and autumn leaves remain 100% true.</p>
+                                <p>• <strong>Best for:</strong> Vibrant golden-hour sunsets, colorful floral fields, and artistic landscapes.</p>
+                                <p>• <strong>Trade-off:</strong> Contrast expansion in independent color textures is slightly milder than direct RGB stretching.</p>
+                            </div>
+                        </div>
+
+                        <!-- Method 3: YCrCb Decoupled HE -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs border-l-4 border-l-purple-500">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <h4 class="font-bold text-sm text-indigo-700">YCrCb Color Space Equalization</h4>
+                                <span class="text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">Luminance Contrast</span>
+                            </div>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Separates overall brightness (Y luminance) from color differences (Cr, Cb chrominance) and equalizes only the luminance channel.
+                            </p>
+                            <div class="space-y-1.5 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Why use it:</strong> Standard technique used in broadcast TV and digital video to boost clarity while keeping colors natural.</p>
+                                <p>• <strong>Best for:</strong> General outdoor photography and balanced daylight landscapes.</p>
+                                <p>• <strong>Trade-off:</strong> Lower contrast gain in deep dark shadow regions compared to direct RGB HE.</p>
+                            </div>
+                        </div>
+
+                        <!-- Method 4: CLAHE -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs border-l-4 border-l-amber-500">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <h4 class="font-bold text-sm text-indigo-700">CLAHE (Adaptive Local Equalization)</h4>
+                                <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">Local Adaptive Grid</span>
+                            </div>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Divides the photo into small local grid tiles and equalizes each tile independently while capping brightness spikes to prevent noise amplification.
+                            </p>
+                            <div class="space-y-1.5 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Why use it:</strong> Prevents bright skies from turning pure blown-out white while revealing hidden details in dark mountain shadows.</p>
+                                <p>• <strong>Best for:</strong> High Dynamic Range (HDR) scenes with bright skies and dark foreground ground features.</p>
+                                <p>• <strong>Trade-off:</strong> Takes slightly more processing time than global equalization techniques.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Method Quick-Decision Table -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-2 mt-3">
+                        <h4 class="font-bold text-xs text-gray-800 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-compass text-indigo-600"></i>
+                            <span>Quick Decision Guide: Which Method Should You Choose?</span>
+                        </h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left text-gray-700 border border-gray-200 bg-white rounded-lg">
+                                <thead class="bg-gray-100 text-gray-900 font-bold border-b border-gray-200">
+                                    <tr>
+                                        <th class="px-3 py-2 border-r border-gray-200">Landscape Scenario</th>
+                                        <th class="px-3 py-2 border-r border-gray-200">Recommended Method</th>
+                                        <th class="px-3 py-2">Primary Advantage</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 font-medium border-r border-gray-200">🌫️ Hazy / Foggy Mountain Scenery</td>
+                                        <td class="px-3 py-2 font-bold text-emerald-700 border-r border-gray-200">Direct RGB Equalization</td>
+                                        <td class="px-3 py-2">Maximum dynamic range stretching and detail retrieval</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 font-medium border-r border-gray-200">🌅 Sunsets & Colorful Skies</td>
+                                        <td class="px-3 py-2 font-bold text-sky-700 border-r border-gray-200">HSV Decoupled HE</td>
+                                        <td class="px-3 py-2">Preserves 100% natural sunset colors without color shift</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 font-medium border-r border-gray-200">☁️ Bright Sky with Dark Shadows</td>
+                                        <td class="px-3 py-2 font-bold text-amber-700 border-r border-gray-200">CLAHE (Adaptive HE)</td>
+                                        <td class="px-3 py-2">Prevents sky blowout while revealing ground shadow details</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 font-medium border-r border-gray-200">🌲 Standard Outdoor Daylight Photos</td>
+                                        <td class="px-3 py-2 font-bold text-purple-700 border-r border-gray-200">YCrCb Decoupled HE</td>
+                                        <td class="px-3 py-2">Balanced contrast boost with television-standard color stability</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: DEMYSTIFYING PERFORMANCE METRICS (CHEAT SHEET) -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-2 flex items-center justify-between">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-gauge-high text-indigo-600"></i>
+                            <span>3. Demystifying Performance Metrics (What Do The Numbers Mean?)</span>
+                        </span>
+                        <span class="text-xs text-gray-500 font-normal">Quality Evaluation Suite</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Metric 1 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">RMS Contrast</span>
+                                <span class="text-[10px] text-emerald-600 font-bold">Higher = Better</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Root Mean Square Contrast</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Measures overall image punchiness and brightness variation. Higher values mean clearer separation between dark shadows and bright highlights.
+                            </p>
+                        </div>
+
+                        <!-- Metric 2 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">Shannon Entropy</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Scale: 0 to 8.0 bits</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Information & Detail Content</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Measures texture richness and detail density. Values closer to 8.0 bits indicate maximum fine detail retrieval in foliage, clouds, and rocks.
+                            </p>
+                        </div>
+
+                        <!-- Metric 3 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">Mean Brightness</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Scale: 0 to 255</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Average Light Intensity</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Tracks overall light level across all pixels (0 = pitch black, 128 = neutral gray, 255 = blinding white). Shows if image got brighter or darker.
+                            </p>
+                        </div>
+
+                        <!-- Metric 4 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">AMBE Error</span>
+                                <span class="text-[10px] text-emerald-600 font-bold">Lower = Better</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Absolute Mean Brightness Error</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Measures brightness shift from the original photo. Lower values mean the equalized photo retains the original overall lighting feel.
+                            </p>
+                        </div>
+
+                        <!-- Metric 5 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-sky-600 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded">PSNR</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Measured in dB</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Peak Signal-to-Noise Ratio</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Measures signal fidelity between original and processed photos. Higher dB values mean fewer artificial distortions or artifacts.
+                            </p>
+                        </div>
+
+                        <!-- Metric 6 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">SSIM</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Scale: 0 to 1.0</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Structural Similarity Index</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Evaluates structural shape and edge preservation (1.0 = identical structure). Ensures mountain ridges and trees don't get warped.
+                            </p>
+                        </div>
+
+                        <!-- Metric 7 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-teal-600 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">SNR</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Measured in dB</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Signal-to-Noise Ratio</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Compares clear visual image details against background sensor noise. Higher dB indicates a cleaner, grain-free photo.
+                            </p>
+                        </div>
+
+                        <!-- Metric 8 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs hover:border-indigo-300 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-xs text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">Exec Time</span>
+                                <span class="text-[10px] text-gray-500 font-bold">Milliseconds (ms)</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Algorithm Processing Speed</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Measures execution latency in milliseconds. Enables benchmarking algorithm suitability for real-time video processing.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION 4: ALL SPATIAL FILTERS & NOISE MODELS EXPLAINED -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-filter text-indigo-600"></i>
+                        <span>4. Spatial Domain Filters & Noise Models Explained</span>
+                    </h3>
+
+                    <!-- Noise Models Box -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-3">
+                        <h4 class="font-bold text-xs text-gray-800 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                            <span>Understanding Synthetic Noise Models</span>
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-gray-700">
+                            <div class="bg-white p-3 rounded-lg border border-gray-200 space-y-1">
+                                <span class="font-bold text-indigo-700 block">1. Gaussian Noise</span>
+                                <p class="text-gray-600 leading-relaxed">Simulates electronic camera sensor grain in low-light photography. Adds fine random brightness variations across all pixels.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border border-gray-200 space-y-1">
+                                <span class="font-bold text-indigo-700 block">2. Salt & Pepper Noise</span>
+                                <p class="text-gray-600 leading-relaxed">Simulates transmission errors and dead sensor pixels. Produces sharp, isolated pure white ("salt") and pure black ("pepper") dots.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border border-gray-200 space-y-1">
+                                <span class="font-bold text-indigo-700 block">3. Speckle Noise</span>
+                                <p class="text-gray-600 leading-relaxed">Multiplicative grainy distortion commonly found in radar, satellite imaging, and atmospheric turbulence.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        
+                        <!-- Filter 1 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-700 border-b border-gray-100 pb-1">1. Mean (Box) Filter</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Replaces each pixel with the average brightness of its neighboring pixels inside the kernel window.
+                            </p>
+                            <div class="space-y-1 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Best for:</strong> Quick smoothing of minor background sensor grain.</p>
+                                <p>• <strong>Limitation:</strong> Slightly blurs sharp mountain ridges and tree foliage outlines.</p>
+                            </div>
+                        </div>
+
+                        <!-- Filter 2 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-700 border-b border-gray-100 pb-1">2. Gaussian Filter</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Smooths pixels using a weighted bell-curve distribution, giving higher priority to central pixels.
+                            </p>
+                            <div class="space-y-1 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Best for:</strong> Cleanly removing atmospheric haze, fog blur, and electronic camera noise.</p>
+                                <p>• <strong>Limitation:</strong> Softens very fine rock surface textures if kernel is too large.</p>
+                            </div>
+                        </div>
+
+                        <!-- Filter 3 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-700 border-b border-gray-100 pb-1">3. Median Filter</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Replaces each pixel with the middle (median) brightness value of surrounding pixels.
+                            </p>
+                            <div class="space-y-1 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Best for:</strong> Eliminating harsh "salt-and-pepper" isolated black and white noise dots.</p>
+                                <p>• <strong>Advantage:</strong> Completely preserves sharp mountain crests without blurring!</p>
+                            </div>
+                        </div>
+
+                        <!-- Filter 4 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-700 border-b border-gray-100 pb-1">4. Bilateral Filter</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Smooths neighboring pixels that share similar colors while preserving strong color boundary edges.
+                            </p>
+                            <div class="space-y-1 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Best for:</strong> Denoising smooth skies and hazy valleys while keeping cliff edges razor sharp.</p>
+                                <p>• <strong>Advantage:</strong> Industry gold-standard edge-preserving noise filter.</p>
+                            </div>
+                        </div>
+
+                        <!-- Filter 5 -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-700 border-b border-gray-100 pb-1">5. Unsharp Sharpen Filter</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Enhances high-frequency edge contrast by emphasizing fine outlines and high-contrast boundaries.
+                            </p>
+                            <div class="space-y-1 text-xs text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <p>• <strong>Best for:</strong> Bringing out crisp rock fractures, pine needle clusters, and cloud edges.</p>
+                                <p>• <strong>Limitation:</strong> Should be applied after noise removal so it doesn't amplify grain.</p>
+                            </div>
+                        </div>
+
+                        <!-- Kernel Tuning Card -->
+                        <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-5 space-y-3 shadow-xs">
+                            <h4 class="font-bold text-sm text-indigo-900 border-b border-indigo-200 pb-1">Kernel Size Selection Guide</h4>
+                            <p class="text-xs text-gray-700 leading-relaxed">
+                                Kernel size controls the filter neighborhood window (in pixels):
+                            </p>
+                            <div class="space-y-1.5 text-xs text-gray-800 font-medium">
+                                <p>• <strong>Small (3x3)</strong>: Light smoothing; preserves maximum fine detail.</p>
+                                <p>• <strong>Medium (5x5)</strong>: Balanced smoothing for moderate camera noise.</p>
+                                <p>• <strong>Large (7x7 / 9x9)</strong>: Heavy smoothing for severe haze or high noise.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION 5: REAL-WORLD PRACTICAL APPLICATIONS -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-earth-americas text-indigo-600"></i>
+                        <span>5. Real-World Practical Application Domains</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs">
+                            <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg w-fit">
+                                <i class="fa-solid fa-camera text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Landscape Photography</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Restores mountain ridge details, forest textures, and overcast skies in outdoor backlit or foggy photography.
+                            </p>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs">
+                            <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg w-fit">
+                                <i class="fa-solid fa-satellite text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Satellite Remote Sensing</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Enhances multi-spectral terrain features, river networks, and vegetation coverage for geographical land-use analysis.
+                            </p>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs">
+                            <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg w-fit">
+                                <i class="fa-solid fa-plane text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Aerial Drone Surveying</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Eliminates atmospheric haze scattering in high-altitude drone footage for crisp mapping and structural inspection.
+                            </p>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 space-y-2 shadow-xs">
+                            <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg w-fit">
+                                <i class="fa-solid fa-x-ray text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xs text-gray-900">Medical Imaging</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Expands dynamic range in diagnostic X-rays, CT scans, and microscopic tissue samples for clinical feature detection.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION 6: INTERACTIVE STUDIO QUICK-START GUIDE -->
+                <div class="bg-indigo-900 text-white rounded-xl p-6 space-y-4 shadow-md">
+                    <div class="flex items-center space-x-3 border-b border-indigo-700 pb-3">
+                        <i class="fa-solid fa-circle-play text-emerald-400 text-2xl"></i>
+                        <div>
+                            <h3 class="font-bold text-base">Interactive Processing Studio: Quick-Start Guide</h3>
+                            <p class="text-xs text-indigo-200">How to test and experiment with landscape photos in 4 easy steps</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                        <div class="bg-indigo-800/80 border border-indigo-700 p-3 rounded-lg space-y-1">
+                            <span class="font-bold text-emerald-400 block">Step 1: Upload Photo</span>
+                            <p class="text-indigo-100">Click or drag & drop any landscape photo (JPG, PNG, WEBP) into the upload box on the Interactive Studio tab.</p>
+                        </div>
+                        <div class="bg-indigo-800/80 border border-indigo-700 p-3 rounded-lg space-y-1">
+                            <span class="font-bold text-emerald-400 block">Step 2: Choose Method</span>
+                            <p class="text-indigo-100">Select an equalization method (Direct RGB, HSV, YCrCb, or CLAHE) from the Equalization Method dropdown.</p>
+                        </div>
+                        <div class="bg-indigo-800/80 border border-indigo-700 p-3 rounded-lg space-y-1">
+                            <span class="font-bold text-emerald-400 block">Step 3: Add Noise & Filter</span>
+                            <p class="text-indigo-100">Optionally inject noise (Gaussian, Salt & Pepper) and tune spatial filter kernels (3x3 to 9x9) to see noise cleaning in action.</p>
+                        </div>
+                        <div class="bg-indigo-800/80 border border-indigo-700 p-3 rounded-lg space-y-1">
+                            <span class="font-bold text-emerald-400 block">Step 4: Inspect Metrics</span>
+                            <p class="text-indigo-100">Compare side-by-side images, inspect live RGB histogram charts, and monitor the 8 statistical performance metrics.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 3: MATHEMATICAL FORMULAS -->
+        <section id="view-math" class="hidden space-y-6">
+            <div class="bg-white border border-gray-200 rounded-xl p-6 space-y-8 shadow-sm">
+                
+                <!-- Section Header -->
+                <div class="border-b border-gray-200 pb-4 flex flex-wrap justify-between items-center gap-4">
+                    
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">Mathematical Modeling & Formulas Explained</h2>
+                        <p class="text-sm text-indigo-600 font-semibold mt-0.5">Demystifying pixel probability, CDF lookup transformations, filter kernels, and quality metrics with real-world examples</p>
+                    </div>
+                </div>
+
+                
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Formula Box 1: PDF -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-indigo-600">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-indigo-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center">1</span>
+                                <span>Pixel Frequency & Probability Density (PDF)</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Step 1: Counting</span>
+                        </div>
+
+                        <!-- Visual Math Equation Display -->
+                        <div class="bg-indigo-50/60 border border-indigo-200 p-4 rounded-xl text-center shadow-xs space-y-2">
+                            <div class="flex items-center justify-center space-x-3 text-lg font-serif italic text-indigo-950 font-bold">
+                                <span>P(r<sub>k</sub>)</span>
+                                <span>=</span>
+                                <div class="inline-flex flex-col items-center justify-center px-2">
+                                    <span class="border-b-2 border-indigo-900 pb-0.5 px-2 font-mono text-sm not-italic font-bold">n<sub>k</sub></span>
+                                    <span class="pt-0.5 font-mono text-sm not-italic font-bold">M × N</span>
+                                </div>
+                                <span class="text-xs font-sans not-italic text-indigo-700 bg-white border border-indigo-200 px-2.5 py-1 rounded-full shadow-xs">for k = 0, 1, 2, ... 255</span>
+                            </div>
+                            <div class="text-xs text-indigo-800 font-mono pt-1 border-t border-indigo-200/60">
+                                $$P(r_k) = \frac{n_k}{M \times N}, \quad \text{for } k \in [0, 255]$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-1.5 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-indigo-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <p class="leading-relaxed bg-indigo-50/40 p-2.5 rounded-lg border border-indigo-100 text-gray-800">
+                                Think of a photo as a giant grid of pixels, where each pixel has a shade between 0 (pitch black) and 255 (pure white). PDF simply answers: <em>"What percentage of the entire photo is made of shade level $r_k$?"</em>
+                            </p>
+                        </div>
+
+                        <!-- Symbol Breakdown -->
+                        <div class="space-y-1 text-xs text-gray-700 border-t border-gray-100 pt-2">
+                            <p class="font-bold text-gray-800">🔍 Variable Breakdown:</p>
+                            <ul class="list-disc list-inside space-y-0.5 text-gray-600 pl-1">
+                                <li>$r_k$: The target brightness shade level (from 0 to 255).</li>
+                                <li>$n_k$: The number of pixels in the photo that have shade $r_k$.</li>
+                                <li>$M \times N$: Total number of pixels in the photo (Width $\times$ Height).</li>
+                                <li>$P(r_k)$: The probability share (percentage) of shade $r_k$ in the photo.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Numerical Example -->
+                        <div class="bg-amber-50/60 border border-amber-200 p-3 rounded-lg text-xs space-y-1 text-gray-800">
+                            <p class="font-bold text-amber-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-calculator text-amber-600"></i>
+                                <span>Real-World Numerical Example:</span>
+                            </p>
+                            <p class="text-gray-700 leading-relaxed">
+                                Suppose a photo has 1,000 total pixels ($M \times N = 1000$). If 200 pixels are dark mountain shadows (shade level 30), then:
+                            </p>
+                            <div class="flex items-center justify-center space-x-2 font-bold text-amber-950 bg-white p-2 rounded border border-amber-200">
+                                <span>P(30)</span>
+                                <span>=</span>
+                                <div class="inline-flex flex-col items-center px-1 text-xs">
+                                    <span class="border-b border-amber-800 pb-0.5">200</span>
+                                    <span>1000</span>
+                                </div>
+                                <span>= 0.20</span>
+                                <span class="text-amber-700 font-semibold">(20% of the photo)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formula Box 2: CDF -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-emerald-600">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-emerald-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center justify-center">2</span>
+                                <span>Cumulative Sum (CDF) & Brightness Stretching</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Step 2: Stretching</span>
+                        </div>
+
+                        <!-- Visual Math Equation Display -->
+                        <div class="bg-emerald-50/60 border border-emerald-200 p-4 rounded-xl text-center shadow-xs space-y-3">
+                            <div class="flex flex-wrap items-center justify-center gap-4 text-emerald-950">
+                                <div class="flex items-center space-x-2 text-base font-serif italic font-bold">
+                                    <span>C(r<sub>k</sub>)</span>
+                                    <span>=</span>
+                                    <span class="text-2xl font-sans not-italic font-extrabold text-emerald-700">∑</span>
+                                    <div class="flex flex-col text-[10px] font-sans not-italic text-emerald-800 font-bold leading-tight -ml-1">
+                                        <span>j=k</span>
+                                        <span>j=0</span>
+                                    </div>
+                                    <span>P(r<sub>j</sub>)</span>
+                                </div>
+
+                                <span class="text-gray-400 font-bold">➔</span>
+
+                                <div class="flex items-center space-x-2 text-base font-serif italic font-bold bg-white px-3 py-1.5 rounded-lg border border-emerald-300 shadow-xs">
+                                    <span class="text-emerald-800">s<sub>k</sub></span>
+                                    <span>=</span>
+                                    <span class="text-xs font-sans not-italic font-bold text-gray-700">round</span>
+                                    <span class="text-lg">(</span>
+                                    <span class="font-mono text-sm not-italic font-extrabold text-emerald-700">255</span>
+                                    <span class="font-sans not-italic text-xs font-bold">×</span>
+                                    <span>C(r<sub>k</sub>)</span>
+                                    <span class="text-lg">)</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-emerald-900 font-mono pt-1 border-t border-emerald-200/60">
+                                $$C(r_k) = \sum_{j=0}^{k} P(r_j) \quad \longrightarrow \quad s_k = \text{round}\Big( 255 \times C(r_k) \Big)$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-1.5 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-emerald-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <p class="leading-relaxed bg-emerald-50/40 p-2.5 rounded-lg border border-emerald-100 text-gray-800">
+                                CDF adds up pixel percentages starting from 0 (black) up to shade $r_k$ to find what percentile a pixel belongs to. We then multiply that percentile by 255 to stretch squished brightness across the entire scale!
+                            </p>
+                        </div>
+
+                        <!-- Symbol Breakdown -->
+                        <div class="space-y-1 text-xs text-gray-700 border-t border-gray-100 pt-2">
+                            <p class="font-bold text-gray-800">🔍 Variable Breakdown:</p>
+                            <ul class="list-disc list-inside space-y-0.5 text-gray-600 pl-1">
+                                <li>$C(r_k)$: Cumulative total percentage of pixels up to shade $r_k$.</li>
+                                <li>$255$: Maximum 8-bit brightness value (pure white).</li>
+                                <li>$s_k$: The new equalized brightness shade assigned to pixels.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Numerical Example -->
+                        <div class="bg-emerald-50/60 border border-emerald-200 p-3 rounded-lg text-xs space-y-1 text-gray-800">
+                            <p class="font-bold text-emerald-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-calculator text-emerald-600"></i>
+                                <span>Real-World Numerical Example:</span>
+                            </p>
+                            <p class="text-gray-700 leading-relaxed">
+                                If dark gray pixels (shade 40) lie at the 45th percentile of accumulated pixels ($C(40) = 0.45$), their new brightness becomes:
+                            </p>
+                            <div class="flex items-center justify-center space-x-2 font-bold text-emerald-950 bg-white p-2 rounded border border-emerald-200">
+                                <span>s<sub>40</sub> = round(255 × 0.45) = 115</span>
+                                <span class="text-emerald-700 font-semibold">(Squished gray 40 ➔ Bright gray 115)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formula Box 3: Color Spaces -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-purple-600">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-purple-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center">3</span>
+                                <span>Color Channel Equalization (RGB vs HSV vs YCrCb)</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">Color Processing</span>
+                        </div>
+
+                        <!-- Visual Math Display -->
+                        <div class="bg-purple-50/60 border border-purple-200 p-3.5 rounded-xl space-y-2 text-center text-xs font-serif italic font-bold text-purple-950">
+                            <div class="bg-white p-2 rounded-lg border border-purple-200 flex justify-around items-center">
+                                <span>R<sub>out</sub> = T<sub>R</sub>(R<sub>in</sub>)</span>
+                                <span>G<sub>out</sub> = T<sub>G</sub>(G<sub>in</sub>)</span>
+                                <span>B<sub>out</sub> = T<sub>B</sub>(B<sub>in</sub>)</span>
+                            </div>
+                            <div class="text-[11px] text-purple-800 font-sans not-italic font-semibold">
+                                $$R_{eq} = T_R(R), \quad G_{eq} = T_G(G), \quad B_{eq} = T_B(B)$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-2 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-purple-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <div class="space-y-2 text-gray-800">
+                                <div class="bg-purple-50/50 p-2.5 rounded-lg border border-purple-100 space-y-1">
+                                    <p class="font-bold text-indigo-700">• Direct RGB Channel Equalization:</p>
+                                    <p class="text-gray-600 leading-relaxed">Calculates CDF stretching independently for Red, Green, and Blue layers: $R_{new} = T(R), G_{new} = T(G), B_{new} = T(B)$. Maximizes texture details in foliage and clouds.</p>
+                                </div>
+                                <div class="bg-purple-50/50 p-2.5 rounded-lg border border-purple-100 space-y-1">
+                                    <p class="font-bold text-sky-700">• HSV / YCrCb Decoupled Equalization:</p>
+                                    <p class="text-gray-600 leading-relaxed">Separates brightness from color. Equalizes only Brightness $V$ (in HSV) or Luminance $Y$ (in YCrCb), while locking original color hues $H, S$ or $Cr, Cb$ unchanged.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formula Box 4: Spatial Filters -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-sky-600">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-sky-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-bold text-xs flex items-center justify-center">4</span>
+                                <span>Spatial Noise Filter Kernels</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">Noise Removal</span>
+                        </div>
+
+                        <!-- Visual Math Equation Display -->
+                        <div class="bg-sky-50/60 border border-sky-200 p-4 rounded-xl shadow-xs space-y-3">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-center">
+                                <div class="bg-white p-3 rounded-lg border border-sky-200 space-y-1">
+                                    <span class="text-xs font-bold text-sky-800 uppercase tracking-wider block border-b border-sky-100 pb-1">Gaussian Bell-Curve Filter</span>
+                                    <div class="flex items-center justify-center space-x-2 text-sm font-serif italic font-bold text-sky-950 py-1">
+                                        <span>G(x, y, σ)</span>
+                                        <span>=</span>
+                                        <div class="inline-flex flex-col items-center justify-center px-1">
+                                            <span class="border-b border-sky-800 pb-0.5 px-1 text-xs not-italic font-mono font-bold">1</span>
+                                            <span class="pt-0.5 text-xs not-italic font-mono font-bold">2π σ<sup>2</sup></span>
+                                        </div>
+                                        <span class="text-xs font-sans not-italic font-bold text-sky-700">exp</span>
+                                        <span class="text-sm">(</span>
+                                        <span class="text-xs font-mono not-italic font-bold">- (x<sup>2</sup>+y<sup>2</sup>) / 2σ<sup>2</sup></span>
+                                        <span class="text-sm">)</span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-3 rounded-lg border border-sky-200 space-y-1">
+                                    <span class="text-xs font-bold text-sky-800 uppercase tracking-wider block border-b border-sky-100 pb-1">Median Impulse Filter</span>
+                                    <div class="flex items-center justify-center space-x-2 text-sm font-serif italic font-bold text-sky-950 py-1">
+                                        <span>I<sub>filtered</sub>(x, y)</span>
+                                        <span>=</span>
+                                        <span class="text-xs font-sans not-italic font-bold text-sky-700">median</span>
+                                        <span>{ I(x+i, y+j) }</span>
+                                    </div>
+                                    <span class="text-[11px] text-gray-500 font-sans font-medium block">evaluated over K × K grid neighborhood window</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-sky-900 font-mono text-center pt-1 border-t border-sky-200/60">
+                                $$G(x,y, \sigma) = \frac{1}{2\pi \sigma^2} \exp\left(-\frac{x^2+y^2}{2\sigma^2}\right)$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-1.5 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-sky-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <p class="leading-relaxed bg-sky-50/40 p-2.5 rounded-lg border border-indigo-100 text-gray-800">
+                                A filter kernel is a small square grid (like 3x3 or 5x5 pixels) that slides over the image. A <strong>Gaussian filter</strong> takes a weighted average (center pixel matters most) to clean haze. A <strong>Median filter</strong> sorts the numbers in the grid and picks the middle value, zapping isolated black & white dots without blurring cliff edges!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Formula Box 5: Quality Metrics -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-amber-500">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-amber-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 font-bold text-xs flex items-center justify-center">5</span>
+                                <span>Contrast & Information Quality Metrics</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Quality Evaluation</span>
+                        </div>
+
+                        <!-- Visual Math Equation Display -->
+                        <div class="bg-amber-50/60 border border-amber-200 p-3.5 rounded-xl text-center shadow-xs space-y-2">
+                            <div class="flex items-center justify-center space-x-2 text-base font-serif italic font-bold text-amber-950">
+                                <span>σ<sub>RMS</sub></span>
+                                <span>=</span>
+                                <span class="text-2xl font-sans not-italic font-light text-amber-700">√</span>
+                                <span class="text-lg border-t-2 border-amber-700 pt-0.5 pl-1 flex items-center space-x-2">
+                                    <div class="inline-flex flex-col items-center justify-center px-1">
+                                        <span class="border-b border-amber-800 pb-0.5 text-xs not-italic font-mono font-bold">1</span>
+                                        <span class="pt-0.5 text-xs not-italic font-mono font-bold">M × N</span>
+                                    </div>
+                                    <span class="text-xl font-sans not-italic font-bold text-amber-700">∑</span>
+                                    <span>( I(x, y) - Ī )<sup>2</sup></span>
+                                </span>
+                            </div>
+                            <div class="text-xs text-amber-900 font-mono pt-1 border-t border-amber-200/60">
+                                $$\sigma_{RMS} = \sqrt{\frac{1}{M N} \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} (I(x,y) - \bar{I})^2}$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-2 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-amber-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <ul class="space-y-1 text-gray-800 bg-amber-50/40 p-2.5 rounded-lg border border-amber-100 list-disc list-inside">
+                                <li><strong>RMS Contrast</strong>: Standard deviation of pixel brightness—measures how far pixels spread away from average light level. Higher = punchier photo.</li>
+                                <li><strong>Shannon Entropy</strong>: Calculates texture richness and information density (in bits, up to 8.0 bits).</li>
+                                <li><strong>AMBE Error</strong>: Measures overall brightness shift. Lower = keeps original scene mood.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Formula Box 6: Structural Similarity -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-xs border-t-4 border-t-rose-500">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <h3 class="text-sm font-bold text-rose-900 flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-rose-100 text-rose-700 font-bold text-xs flex items-center justify-center">6</span>
+                                <span>Structural Fidelity Metrics (PSNR & SSIM)</span>
+                            </h3>
+                            <span class="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">Fidelity Checks</span>
+                        </div>
+
+                        <!-- Visual Math Equation Display -->
+                        <div class="bg-rose-50/60 border border-rose-200 p-3.5 rounded-xl shadow-xs space-y-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-center">
+                                <div class="bg-white p-2.5 rounded-lg border border-rose-200">
+                                    <span class="text-xs font-bold text-rose-800 uppercase tracking-wider block border-b border-rose-100 pb-1">PSNR (dB)</span>
+                                    <div class="flex items-center justify-center space-x-2 text-sm font-serif italic font-bold text-rose-950 py-1">
+                                        <span>PSNR</span>
+                                        <span>=</span>
+                                        <span class="text-xs font-sans not-italic font-bold text-rose-700">10 · log<sub>10</sub></span>
+                                        <span class="text-sm">(</span>
+                                        <div class="inline-flex flex-col items-center justify-center px-1">
+                                            <span class="border-b border-rose-800 pb-0.5 text-xs not-italic font-mono font-bold">255<sup>2</sup></span>
+                                            <span class="pt-0.5 text-xs not-italic font-mono font-bold">MSE</span>
+                                        </div>
+                                        <span class="text-sm">)</span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-2.5 rounded-lg border border-rose-200">
+                                    <span class="text-xs font-bold text-rose-800 uppercase tracking-wider block border-b border-rose-100 pb-1">SSIM Index</span>
+                                    <div class="flex items-center justify-center space-x-2 text-xs font-serif italic font-bold text-rose-950 py-1">
+                                        <span>SSIM(x,y)</span>
+                                        <span>=</span>
+                                        <div class="inline-flex flex-col items-center justify-center px-1">
+                                            <span class="border-b border-rose-800 pb-0.5 text-[11px] not-italic font-mono font-bold">(2μ<sub>x</sub>μ<sub>y</sub> + C<sub>1</sub>)(2σ<sub>xy</sub> + C<sub>2</sub>)</span>
+                                            <span class="pt-0.5 text-[11px] not-italic font-mono font-bold">(μ<sub>x</sub><sup>2</sup> + μ<sub>y</sub><sup>2</sup> + C<sub>1</sub>)(σ<sub>x</sub><sup>2</sup> + σ<sub>y</sub><sup>2</sup> + C<sub>2</sub>)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-rose-900 font-mono text-center pt-1 border-t border-rose-200/60">
+                                $$PSNR = 10 \cdot \log_{10}\left( \frac{255^2}{MSE} \right), \quad SSIM(x,y) = \frac{(2\mu_x\mu_y + C_1)(2\sigma_{xy} + C_2)}{(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}$$
+                            </div>
+                        </div>
+
+                        <!-- Plain English Explanation -->
+                        <div class="space-y-2 text-xs text-gray-700">
+                            <p class="font-bold text-gray-900 flex items-center space-x-1">
+                                <i class="fa-solid fa-comment-dots text-rose-600"></i>
+                                <span>Context:</span>
+                            </p>
+                            <ul class="space-y-1 text-gray-800 bg-rose-50/40 p-2.5 rounded-lg border border-rose-100 list-disc list-inside">
+                                <li><strong>PSNR (dB)</strong>: Measures structural fidelity in decibels. Higher PSNR = fewer synthetic artifacts.</li>
+                                <li><strong>SSIM Score</strong>: Evaluates human perception of shapes and patterns (1.0 = identical structure). Ensures mountain ridges and trees maintain their natural outline.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: RESEARCH PAPERS -->
+        <section id="view-literature" class="hidden space-y-6">
+            <div class="bg-white border border-gray-200 rounded-xl p-6 space-y-6 shadow-sm">
+                <div class="border-b border-gray-200 pb-4">
+                    <h2 class="text-xl font-bold text-gray-900">Literature Review (6 Benchmark Research Papers)</h2>
+                    <p class="text-sm text-indigo-600 font-semibold">Foundational studies in spatial contrast enhancement and color histogram processing</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left text-gray-800 border border-gray-200">
+                        <thead class="bg-gray-100 text-gray-900 uppercase tracking-wider font-bold border-b border-gray-200">
+                            <tr>
+                                <th class="px-4 py-3 border-r border-gray-200">Author(s) & Year</th>
+                                <th class="px-4 py-3 border-r border-gray-200">Technique / Method</th>
+                                <th class="px-4 py-3 border-r border-gray-200">Key Contributions</th>
+                                <th class="px-4 py-3">Limitations / Gaps Identified</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Gonzalez & Woods (2018)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Global Histogram Equalization (GHE)</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Established discrete CDF transformation formula for uniform pixel intensity spreading.</td>
+                                <td class="px-4 py-3">Evaluated primarily on single-channel grayscale; color shift artifacts in 3-channel RGB ignored.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Reza, A. M. (2004)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Contrast Limited Adaptive HE (CLAHE)</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Prevents noise over-amplification in homogeneous regions by tile-based histogram slope clipping.</td>
+                                <td class="px-4 py-3">Higher computational complexity; requires parameter tuning for tile grid size and clip limit.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Naik & Murthy (2003)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Hue-Preserving HE in HSV Space</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Equalizes $V$ luminance channel to strictly preserve original image chromaticity ($H, S$).</td>
+                                <td class="px-4 py-3">Fails to optimize independent spectral contrast in multi-spectral landscape foliage features.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Wang & Ye (2005)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Brightness Preserving Bi-HE (BBHE)</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Preserves mean brightness by splitting input histogram at mean value prior to equalization.</td>
+                                <td class="px-4 py-3">Limited dynamic range expansion in dark landscape shadow regions compared to global RGB HE.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Zuiderveld, K. (1994)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Adaptive HE & Variations</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Introduced contextual region tile interpolation for local edge detail recovery.</td>
+                                <td class="px-4 py-3">Tile border artifacts require contextual padding; sensitive to window boundary selection.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-bold text-gray-900 border-r border-gray-200">Ibrahim & Pik Kong (2007)</td>
+                                <td class="px-4 py-3 border-r border-gray-200 font-medium">Dynamic Histogram Equalization (DHE)</td>
+                                <td class="px-4 py-3 border-r border-gray-200">Partitions input histogram based on local minima to prevent image over-saturation.</td>
+                                <td class="px-4 py-3">High algorithmic complexity; can create synthetic plateau artifacts in smooth sky gradients.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-white py-4 text-center text-xs text-gray-500 font-medium">
+        <p>Project Based Learning || Department of Computer Science & Engineering, S.B.J.I.T.M.R., Nagpur</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

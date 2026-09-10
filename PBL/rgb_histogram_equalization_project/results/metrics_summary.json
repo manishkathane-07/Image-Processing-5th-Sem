@@ -1,0 +1,1902 @@
+{
+  "landscape1_hazy_mountains": {
+    "methods": {
+      "raw": {
+        "rms_contrast": 39.09,
+        "shannon_entropy": 4.1926,
+        "mean_brightness": 147.28,
+        "ambe": 0.0,
+        "psnr": 100.0,
+        "ssim": 1.0,
+        "snr": 11.52,
+        "execution_time_ms": 0.0
+      },
+      "rgb_he": {
+        "rms_contrast": 59.9,
+        "shannon_entropy": 4.7808,
+        "mean_brightness": 142.14,
+        "ambe": 5.14,
+        "psnr": 19.31,
+        "ssim": 0.9022,
+        "snr": 7.51,
+        "execution_time_ms": 16.1
+      },
+      "hsv_v": {
+        "rms_contrast": 52.28,
+        "shannon_entropy": 4.4787,
+        "mean_brightness": 134.45,
+        "ambe": 12.84,
+        "psnr": 20.71,
+        "ssim": 0.9038,
+        "snr": 8.2,
+        "execution_time_ms": 0.99
+      },
+      "ycrcb_y": {
+        "rms_contrast": 59.76,
+        "shannon_entropy": 4.1652,
+        "mean_brightness": 142.36,
+        "ambe": 4.93,
+        "psnr": 20.07,
+        "ssim": 0.9051,
+        "snr": 7.54,
+        "execution_time_ms": 1.0
+      },
+      "clahe": {
+        "rms_contrast": 42.0,
+        "shannon_entropy": 4.99,
+        "mean_brightness": 145.04,
+        "ambe": 2.24,
+        "psnr": 34.45,
+        "ssim": 0.9857,
+        "snr": 10.76,
+        "execution_time_ms": 74.5
+      }
+    },
+    "noise_filters": {
+      "gaussian": {
+        "none": {
+          "3": {
+            "rms_contrast": 70.84,
+            "shannon_entropy": 7.7658,
+            "mean_brightness": 128.65,
+            "ambe": 18.63,
+            "psnr": 15.13,
+            "ssim": 0.2186,
+            "snr": 5.18,
+            "execution_time_ms": 13.0
+          },
+          "5": {
+            "rms_contrast": 70.8,
+            "shannon_entropy": 7.766,
+            "mean_brightness": 128.64,
+            "ambe": 18.65,
+            "psnr": 15.14,
+            "ssim": 0.2189,
+            "snr": 5.19,
+            "execution_time_ms": 14.41
+          },
+          "7": {
+            "rms_contrast": 70.83,
+            "shannon_entropy": 7.7663,
+            "mean_brightness": 128.62,
+            "ambe": 18.66,
+            "psnr": 15.13,
+            "ssim": 0.2188,
+            "snr": 5.18,
+            "execution_time_ms": 14.46
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 71.24,
+            "shannon_entropy": 7.7847,
+            "mean_brightness": 130.6,
+            "ambe": 16.68,
+            "psnr": 15.56,
+            "ssim": 0.3826,
+            "snr": 5.26,
+            "execution_time_ms": 14.0
+          },
+          "5": {
+            "rms_contrast": 70.74,
+            "shannon_entropy": 7.7596,
+            "mean_brightness": 131.74,
+            "ambe": 15.54,
+            "psnr": 15.86,
+            "ssim": 0.5223,
+            "snr": 5.4,
+            "execution_time_ms": 14.12
+          },
+          "7": {
+            "rms_contrast": 70.07,
+            "shannon_entropy": 7.6264,
+            "mean_brightness": 132.78,
+            "ambe": 14.5,
+            "psnr": 16.12,
+            "ssim": 0.6177,
+            "snr": 5.55,
+            "execution_time_ms": 15.01
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 71.3,
+            "shannon_entropy": 7.7808,
+            "mean_brightness": 130.53,
+            "ambe": 16.75,
+            "psnr": 15.53,
+            "ssim": 0.3717,
+            "snr": 5.25,
+            "execution_time_ms": 14.0
+          },
+          "5": {
+            "rms_contrast": 71.15,
+            "shannon_entropy": 7.7881,
+            "mean_brightness": 130.95,
+            "ambe": 16.33,
+            "psnr": 15.64,
+            "ssim": 0.425,
+            "snr": 5.3,
+            "execution_time_ms": 14.01
+          },
+          "7": {
+            "rms_contrast": 71.2,
+            "shannon_entropy": 7.7906,
+            "mean_brightness": 130.96,
+            "ambe": 16.32,
+            "psnr": 15.64,
+            "ssim": 0.4303,
+            "snr": 5.29,
+            "execution_time_ms": 14.01
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 71.29,
+            "shannon_entropy": 7.7737,
+            "mean_brightness": 130.18,
+            "ambe": 17.1,
+            "psnr": 15.47,
+            "ssim": 0.3491,
+            "snr": 5.23,
+            "execution_time_ms": 15.0
+          },
+          "5": {
+            "rms_contrast": 71.06,
+            "shannon_entropy": 7.7814,
+            "mean_brightness": 131.31,
+            "ambe": 15.98,
+            "psnr": 15.71,
+            "ssim": 0.479,
+            "snr": 5.33,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 70.54,
+            "shannon_entropy": 7.733,
+            "mean_brightness": 132.09,
+            "ambe": 15.2,
+            "psnr": 15.95,
+            "ssim": 0.578,
+            "snr": 5.45,
+            "execution_time_ms": 13.99
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 71.36,
+            "shannon_entropy": 7.767,
+            "mean_brightness": 129.92,
+            "ambe": 17.37,
+            "psnr": 15.41,
+            "ssim": 0.3192,
+            "snr": 5.2,
+            "execution_time_ms": 15.12
+          },
+          "5": {
+            "rms_contrast": 71.18,
+            "shannon_entropy": 7.7838,
+            "mean_brightness": 130.94,
+            "ambe": 16.34,
+            "psnr": 15.64,
+            "ssim": 0.4188,
+            "snr": 5.29,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 70.67,
+            "shannon_entropy": 7.7466,
+            "mean_brightness": 131.91,
+            "ambe": 15.37,
+            "psnr": 15.9,
+            "ssim": 0.532,
+            "snr": 5.42,
+            "execution_time_ms": 14.08
+          }
+        }
+      },
+      "salt_pepper": {
+        "none": {
+          "3": {
+            "rms_contrast": 66.49,
+            "shannon_entropy": 4.9071,
+            "mean_brightness": 134.8,
+            "ambe": 12.49,
+            "psnr": 14.54,
+            "ssim": 0.0795,
+            "snr": 6.14,
+            "execution_time_ms": 16.0
+          },
+          "5": {
+            "rms_contrast": 66.48,
+            "shannon_entropy": 4.9064,
+            "mean_brightness": 134.82,
+            "ambe": 12.46,
+            "psnr": 14.55,
+            "ssim": 0.0805,
+            "snr": 6.14,
+            "execution_time_ms": 16.06
+          },
+          "7": {
+            "rms_contrast": 66.49,
+            "shannon_entropy": 4.9065,
+            "mean_brightness": 134.82,
+            "ambe": 12.47,
+            "psnr": 14.55,
+            "ssim": 0.079,
+            "snr": 6.14,
+            "execution_time_ms": 16.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 70.31,
+            "shannon_entropy": 6.3464,
+            "mean_brightness": 131.7,
+            "ambe": 15.59,
+            "psnr": 15.62,
+            "ssim": 0.1197,
+            "snr": 5.45,
+            "execution_time_ms": 15.01
+          },
+          "5": {
+            "rms_contrast": 72.85,
+            "shannon_entropy": 7.1171,
+            "mean_brightness": 129.3,
+            "ambe": 17.98,
+            "psnr": 15.25,
+            "ssim": 0.1914,
+            "snr": 4.98,
+            "execution_time_ms": 15.0
+          },
+          "7": {
+            "rms_contrast": 73.45,
+            "shannon_entropy": 7.3552,
+            "mean_brightness": 129.11,
+            "ambe": 18.18,
+            "psnr": 15.24,
+            "ssim": 0.2667,
+            "snr": 4.9,
+            "execution_time_ms": 14.8
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 71.07,
+            "shannon_entropy": 6.643,
+            "mean_brightness": 130.94,
+            "ambe": 16.34,
+            "psnr": 15.34,
+            "ssim": 0.1101,
+            "snr": 5.31,
+            "execution_time_ms": 15.0
+          },
+          "5": {
+            "rms_contrast": 73.31,
+            "shannon_entropy": 7.4628,
+            "mean_brightness": 128.83,
+            "ambe": 18.45,
+            "psnr": 15.0,
+            "ssim": 0.1357,
+            "snr": 4.9,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 73.38,
+            "shannon_entropy": 7.4712,
+            "mean_brightness": 128.76,
+            "ambe": 18.53,
+            "psnr": 15.0,
+            "ssim": 0.1402,
+            "snr": 4.88,
+            "execution_time_ms": 14.01
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 59.73,
+            "shannon_entropy": 4.8422,
+            "mean_brightness": 142.35,
+            "ambe": 4.94,
+            "psnr": 19.42,
+            "ssim": 0.9151,
+            "snr": 7.54,
+            "execution_time_ms": 16.0
+          },
+          "5": {
+            "rms_contrast": 75.57,
+            "shannon_entropy": 4.8536,
+            "mean_brightness": 112.53,
+            "ambe": 34.75,
+            "psnr": 14.27,
+            "ssim": 0.7576,
+            "snr": 3.46,
+            "execution_time_ms": 16.0
+          },
+          "7": {
+            "rms_contrast": 83.41,
+            "shannon_entropy": 4.8053,
+            "mean_brightness": 97.91,
+            "ambe": 49.37,
+            "psnr": 12.09,
+            "ssim": 0.6024,
+            "snr": 1.39,
+            "execution_time_ms": 15.0
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 66.34,
+            "shannon_entropy": 5.0167,
+            "mean_brightness": 134.92,
+            "ambe": 12.36,
+            "psnr": 14.55,
+            "ssim": 0.0807,
+            "snr": 6.17,
+            "execution_time_ms": 15.0
+          },
+          "5": {
+            "rms_contrast": 66.18,
+            "shannon_entropy": 5.078,
+            "mean_brightness": 134.98,
+            "ambe": 12.3,
+            "psnr": 14.59,
+            "ssim": 0.0795,
+            "snr": 6.19,
+            "execution_time_ms": 16.0
+          },
+          "7": {
+            "rms_contrast": 66.07,
+            "shannon_entropy": 5.0233,
+            "mean_brightness": 135.05,
+            "ambe": 12.23,
+            "psnr": 14.61,
+            "ssim": 0.0799,
+            "snr": 6.21,
+            "execution_time_ms": 15.99
+          }
+        }
+      }
+    }
+  },
+  "landscape2_dark_forest": {
+    "methods": {
+      "raw": {
+        "rms_contrast": 19.64,
+        "shannon_entropy": 4.7318,
+        "mean_brightness": 38.72,
+        "ambe": 0.0,
+        "psnr": 100.0,
+        "ssim": 1.0,
+        "snr": 5.89,
+        "execution_time_ms": 0.0
+      },
+      "rgb_he": {
+        "rms_contrast": 65.41,
+        "shannon_entropy": 5.8845,
+        "mean_brightness": 134.89,
+        "ambe": 96.18,
+        "psnr": 7.08,
+        "ssim": 0.3857,
+        "snr": 6.29,
+        "execution_time_ms": 14.0
+      },
+      "hsv_v": {
+        "rms_contrast": 68.94,
+        "shannon_entropy": 5.6895,
+        "mean_brightness": 116.73,
+        "ambe": 78.01,
+        "psnr": 9.25,
+        "ssim": 0.4511,
+        "snr": 4.57,
+        "execution_time_ms": 0.94
+      },
+      "ycrcb_y": {
+        "rms_contrast": 69.15,
+        "shannon_entropy": 4.7004,
+        "mean_brightness": 136.05,
+        "ambe": 97.33,
+        "psnr": 7.28,
+        "ssim": 0.3834,
+        "snr": 5.88,
+        "execution_time_ms": 1.91
+      },
+      "clahe": {
+        "rms_contrast": 38.14,
+        "shannon_entropy": 6.3297,
+        "mean_brightness": 65.37,
+        "ambe": 26.65,
+        "psnr": 17.9,
+        "ssim": 0.8221,
+        "snr": 4.68,
+        "execution_time_ms": 3.0
+      }
+    },
+    "noise_filters": {
+      "gaussian": {
+        "none": {
+          "3": {
+            "rms_contrast": 66.15,
+            "shannon_entropy": 7.8091,
+            "mean_brightness": 127.57,
+            "ambe": 88.86,
+            "psnr": 7.41,
+            "ssim": 0.1129,
+            "snr": 5.7,
+            "execution_time_ms": 14.0
+          },
+          "5": {
+            "rms_contrast": 66.13,
+            "shannon_entropy": 7.8076,
+            "mean_brightness": 127.58,
+            "ambe": 88.86,
+            "psnr": 7.41,
+            "ssim": 0.1135,
+            "snr": 5.71,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 66.13,
+            "shannon_entropy": 7.8087,
+            "mean_brightness": 127.61,
+            "ambe": 88.9,
+            "psnr": 7.41,
+            "ssim": 0.1133,
+            "snr": 5.71,
+            "execution_time_ms": 14.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 67.6,
+            "shannon_entropy": 7.8295,
+            "mean_brightness": 130.18,
+            "ambe": 91.46,
+            "psnr": 7.24,
+            "ssim": 0.2392,
+            "snr": 5.69,
+            "execution_time_ms": 15.92
+          },
+          "5": {
+            "rms_contrast": 67.9,
+            "shannon_entropy": 7.7958,
+            "mean_brightness": 130.64,
+            "ambe": 91.92,
+            "psnr": 7.23,
+            "ssim": 0.3328,
+            "snr": 5.68,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 67.82,
+            "shannon_entropy": 7.7382,
+            "mean_brightness": 130.95,
+            "ambe": 92.23,
+            "psnr": 7.21,
+            "ssim": 0.3759,
+            "snr": 5.71,
+            "execution_time_ms": 15.0
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 67.54,
+            "shannon_entropy": 7.8307,
+            "mean_brightness": 130.07,
+            "ambe": 91.36,
+            "psnr": 7.25,
+            "ssim": 0.2395,
+            "snr": 5.69,
+            "execution_time_ms": 15.0
+          },
+          "5": {
+            "rms_contrast": 67.75,
+            "shannon_entropy": 7.8209,
+            "mean_brightness": 130.2,
+            "ambe": 91.48,
+            "psnr": 7.25,
+            "ssim": 0.2828,
+            "snr": 5.67,
+            "execution_time_ms": 15.0
+          },
+          "7": {
+            "rms_contrast": 67.83,
+            "shannon_entropy": 7.8202,
+            "mean_brightness": 130.27,
+            "ambe": 91.55,
+            "psnr": 7.24,
+            "ssim": 0.2861,
+            "snr": 5.67,
+            "execution_time_ms": 14.0
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 67.32,
+            "shannon_entropy": 7.8279,
+            "mean_brightness": 129.92,
+            "ambe": 91.2,
+            "psnr": 7.25,
+            "ssim": 0.2086,
+            "snr": 5.71,
+            "execution_time_ms": 14.0
+          },
+          "5": {
+            "rms_contrast": 67.8,
+            "shannon_entropy": 7.8121,
+            "mean_brightness": 130.35,
+            "ambe": 91.63,
+            "psnr": 7.24,
+            "ssim": 0.307,
+            "snr": 5.68,
+            "execution_time_ms": 13.69
+          },
+          "7": {
+            "rms_contrast": 67.86,
+            "shannon_entropy": 7.7759,
+            "mean_brightness": 130.67,
+            "ambe": 91.96,
+            "psnr": 7.23,
+            "ssim": 0.3613,
+            "snr": 5.69,
+            "execution_time_ms": 15.16
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 67.25,
+            "shannon_entropy": 7.8247,
+            "mean_brightness": 129.94,
+            "ambe": 91.23,
+            "psnr": 7.25,
+            "ssim": 0.1934,
+            "snr": 5.72,
+            "execution_time_ms": 14.19
+          },
+          "5": {
+            "rms_contrast": 67.75,
+            "shannon_entropy": 7.8179,
+            "mean_brightness": 130.22,
+            "ambe": 91.51,
+            "psnr": 7.25,
+            "ssim": 0.28,
+            "snr": 5.68,
+            "execution_time_ms": 15.01
+          },
+          "7": {
+            "rms_contrast": 67.94,
+            "shannon_entropy": 7.7786,
+            "mean_brightness": 130.6,
+            "ambe": 91.89,
+            "psnr": 7.23,
+            "ssim": 0.3507,
+            "snr": 5.68,
+            "execution_time_ms": 14.0
+          }
+        }
+      },
+      "salt_pepper": {
+        "none": {
+          "3": {
+            "rms_contrast": 70.5,
+            "shannon_entropy": 5.8501,
+            "mean_brightness": 128.54,
+            "ambe": 89.83,
+            "psnr": 7.18,
+            "ssim": 0.0588,
+            "snr": 5.22,
+            "execution_time_ms": 16.08
+          },
+          "5": {
+            "rms_contrast": 70.67,
+            "shannon_entropy": 5.8567,
+            "mean_brightness": 128.42,
+            "ambe": 89.7,
+            "psnr": 7.19,
+            "ssim": 0.0594,
+            "snr": 5.19,
+            "execution_time_ms": 16.36
+          },
+          "7": {
+            "rms_contrast": 70.65,
+            "shannon_entropy": 5.8585,
+            "mean_brightness": 128.39,
+            "ambe": 89.67,
+            "psnr": 7.19,
+            "ssim": 0.0593,
+            "snr": 5.19,
+            "execution_time_ms": 16.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 70.41,
+            "shannon_entropy": 7.0438,
+            "mean_brightness": 130.04,
+            "ambe": 91.32,
+            "psnr": 7.15,
+            "ssim": 0.0582,
+            "snr": 5.33,
+            "execution_time_ms": 15.17
+          },
+          "5": {
+            "rms_contrast": 70.53,
+            "shannon_entropy": 7.549,
+            "mean_brightness": 129.37,
+            "ambe": 90.65,
+            "psnr": 7.23,
+            "ssim": 0.0855,
+            "snr": 5.27,
+            "execution_time_ms": 15.55
+          },
+          "7": {
+            "rms_contrast": 69.83,
+            "shannon_entropy": 7.6386,
+            "mean_brightness": 129.69,
+            "ambe": 90.98,
+            "psnr": 7.24,
+            "ssim": 0.1239,
+            "snr": 5.38,
+            "execution_time_ms": 14.0
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 70.28,
+            "shannon_entropy": 7.2097,
+            "mean_brightness": 129.87,
+            "ambe": 91.16,
+            "psnr": 7.16,
+            "ssim": 0.0587,
+            "snr": 5.33,
+            "execution_time_ms": 14.0
+          },
+          "5": {
+            "rms_contrast": 70.73,
+            "shannon_entropy": 7.6891,
+            "mean_brightness": 129.19,
+            "ambe": 90.47,
+            "psnr": 7.21,
+            "ssim": 0.074,
+            "snr": 5.23,
+            "execution_time_ms": 15.13
+          },
+          "7": {
+            "rms_contrast": 70.64,
+            "shannon_entropy": 7.7067,
+            "mean_brightness": 129.17,
+            "ambe": 90.46,
+            "psnr": 7.22,
+            "ssim": 0.075,
+            "snr": 5.24,
+            "execution_time_ms": 14.08
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 64.47,
+            "shannon_entropy": 5.7485,
+            "mean_brightness": 135.76,
+            "ambe": 97.04,
+            "psnr": 7.03,
+            "ssim": 0.4006,
+            "snr": 6.47,
+            "execution_time_ms": 36.99
+          },
+          "5": {
+            "rms_contrast": 64.12,
+            "shannon_entropy": 5.6526,
+            "mean_brightness": 136.12,
+            "ambe": 97.4,
+            "psnr": 7.01,
+            "ssim": 0.4224,
+            "snr": 6.54,
+            "execution_time_ms": 82.0
+          },
+          "7": {
+            "rms_contrast": 63.87,
+            "shannon_entropy": 5.578,
+            "mean_brightness": 136.4,
+            "ambe": 97.68,
+            "psnr": 6.99,
+            "ssim": 0.4314,
+            "snr": 6.59,
+            "execution_time_ms": 58.07
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 68.98,
+            "shannon_entropy": 6.2161,
+            "mean_brightness": 131.82,
+            "ambe": 93.11,
+            "psnr": 7.02,
+            "ssim": 0.0533,
+            "snr": 5.63,
+            "execution_time_ms": 62.01
+          },
+          "5": {
+            "rms_contrast": 69.31,
+            "shannon_entropy": 6.4728,
+            "mean_brightness": 130.9,
+            "ambe": 92.18,
+            "psnr": 7.05,
+            "ssim": 0.0616,
+            "snr": 5.52,
+            "execution_time_ms": 32.99
+          },
+          "7": {
+            "rms_contrast": 68.99,
+            "shannon_entropy": 6.528,
+            "mean_brightness": 131.08,
+            "ambe": 92.36,
+            "psnr": 7.05,
+            "ssim": 0.0692,
+            "snr": 5.58,
+            "execution_time_ms": 33.01
+          }
+        }
+      }
+    }
+  },
+  "landscape3_sunset_lake": {
+    "methods": {
+      "raw": {
+        "rms_contrast": 45.03,
+        "shannon_entropy": 6.8859,
+        "mean_brightness": 99.92,
+        "ambe": 0.0,
+        "psnr": 100.0,
+        "ssim": 1.0,
+        "snr": 6.92,
+        "execution_time_ms": 0.0
+      },
+      "rgb_he": {
+        "rms_contrast": 68.55,
+        "shannon_entropy": 7.1011,
+        "mean_brightness": 128.71,
+        "ambe": 28.79,
+        "psnr": 13.12,
+        "ssim": 0.9143,
+        "snr": 5.47,
+        "execution_time_ms": 35.01
+      },
+      "hsv_v": {
+        "rms_contrast": 46.15,
+        "shannon_entropy": 6.2911,
+        "mean_brightness": 84.57,
+        "ambe": 15.35,
+        "psnr": 21.66,
+        "ssim": 0.9279,
+        "snr": 5.26,
+        "execution_time_ms": 7.0
+      },
+      "ycrcb_y": {
+        "rms_contrast": 69.47,
+        "shannon_entropy": 6.8904,
+        "mean_brightness": 125.83,
+        "ambe": 25.91,
+        "psnr": 16.69,
+        "ssim": 0.9427,
+        "snr": 5.16,
+        "execution_time_ms": 2.0
+      },
+      "clahe": {
+        "rms_contrast": 47.32,
+        "shannon_entropy": 6.9736,
+        "mean_brightness": 103.08,
+        "ambe": 3.16,
+        "psnr": 24.51,
+        "ssim": 0.9473,
+        "snr": 6.76,
+        "execution_time_ms": 4.01
+      }
+    },
+    "noise_filters": {
+      "gaussian": {
+        "none": {
+          "3": {
+            "rms_contrast": 68.85,
+            "shannon_entropy": 7.8352,
+            "mean_brightness": 127.72,
+            "ambe": 27.8,
+            "psnr": 13.02,
+            "ssim": 0.4287,
+            "snr": 5.37,
+            "execution_time_ms": 34.99
+          },
+          "5": {
+            "rms_contrast": 68.83,
+            "shannon_entropy": 7.8354,
+            "mean_brightness": 127.73,
+            "ambe": 27.81,
+            "psnr": 13.02,
+            "ssim": 0.4281,
+            "snr": 5.37,
+            "execution_time_ms": 32.57
+          },
+          "7": {
+            "rms_contrast": 68.85,
+            "shannon_entropy": 7.8351,
+            "mean_brightness": 127.71,
+            "ambe": 27.79,
+            "psnr": 13.02,
+            "ssim": 0.4287,
+            "snr": 5.37,
+            "execution_time_ms": 34.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 69.02,
+            "shannon_entropy": 7.7371,
+            "mean_brightness": 128.13,
+            "ambe": 28.21,
+            "psnr": 13.09,
+            "ssim": 0.7811,
+            "snr": 5.37,
+            "execution_time_ms": 33.05
+          },
+          "5": {
+            "rms_contrast": 68.96,
+            "shannon_entropy": 7.7285,
+            "mean_brightness": 128.19,
+            "ambe": 28.27,
+            "psnr": 13.09,
+            "ssim": 0.8623,
+            "snr": 5.39,
+            "execution_time_ms": 32.82
+          },
+          "7": {
+            "rms_contrast": 68.93,
+            "shannon_entropy": 7.7258,
+            "mean_brightness": 128.25,
+            "ambe": 28.33,
+            "psnr": 13.08,
+            "ssim": 0.8875,
+            "snr": 5.39,
+            "execution_time_ms": 35.47
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 69.04,
+            "shannon_entropy": 7.7397,
+            "mean_brightness": 128.1,
+            "ambe": 28.18,
+            "psnr": 13.1,
+            "ssim": 0.7687,
+            "snr": 5.37,
+            "execution_time_ms": 63.8
+          },
+          "5": {
+            "rms_contrast": 68.99,
+            "shannon_entropy": 7.733,
+            "mean_brightness": 128.15,
+            "ambe": 28.23,
+            "psnr": 13.1,
+            "ssim": 0.8152,
+            "snr": 5.38,
+            "execution_time_ms": 62.0
+          },
+          "7": {
+            "rms_contrast": 69.0,
+            "shannon_entropy": 7.7332,
+            "mean_brightness": 128.15,
+            "ambe": 28.23,
+            "psnr": 13.1,
+            "ssim": 0.8177,
+            "snr": 5.38,
+            "execution_time_ms": 31.98
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 69.03,
+            "shannon_entropy": 7.7403,
+            "mean_brightness": 128.07,
+            "ambe": 28.15,
+            "psnr": 13.1,
+            "ssim": 0.7403,
+            "snr": 5.37,
+            "execution_time_ms": 35.07
+          },
+          "5": {
+            "rms_contrast": 69.01,
+            "shannon_entropy": 7.7254,
+            "mean_brightness": 128.15,
+            "ambe": 28.23,
+            "psnr": 13.11,
+            "ssim": 0.8475,
+            "snr": 5.38,
+            "execution_time_ms": 54.52
+          },
+          "7": {
+            "rms_contrast": 68.97,
+            "shannon_entropy": 7.7187,
+            "mean_brightness": 128.19,
+            "ambe": 28.27,
+            "psnr": 13.12,
+            "ssim": 0.8868,
+            "snr": 5.38,
+            "execution_time_ms": 33.27
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 69.03,
+            "shannon_entropy": 7.7462,
+            "mean_brightness": 128.07,
+            "ambe": 28.15,
+            "psnr": 13.1,
+            "ssim": 0.7004,
+            "snr": 5.37,
+            "execution_time_ms": 31.99
+          },
+          "5": {
+            "rms_contrast": 69.04,
+            "shannon_entropy": 7.7234,
+            "mean_brightness": 128.12,
+            "ambe": 28.2,
+            "psnr": 13.11,
+            "ssim": 0.817,
+            "snr": 5.37,
+            "execution_time_ms": 32.0
+          },
+          "7": {
+            "rms_contrast": 68.94,
+            "shannon_entropy": 7.7112,
+            "mean_brightness": 128.2,
+            "ambe": 28.28,
+            "psnr": 13.12,
+            "ssim": 0.8734,
+            "snr": 5.39,
+            "execution_time_ms": 35.0
+          }
+        }
+      },
+      "salt_pepper": {
+        "none": {
+          "3": {
+            "rms_contrast": 73.04,
+            "shannon_entropy": 7.0056,
+            "mean_brightness": 123.14,
+            "ambe": 23.22,
+            "psnr": 11.84,
+            "ssim": 0.0951,
+            "snr": 4.54,
+            "execution_time_ms": 33.99
+          },
+          "5": {
+            "rms_contrast": 73.04,
+            "shannon_entropy": 6.9979,
+            "mean_brightness": 123.13,
+            "ambe": 23.21,
+            "psnr": 11.84,
+            "ssim": 0.0946,
+            "snr": 4.54,
+            "execution_time_ms": 33.99
+          },
+          "7": {
+            "rms_contrast": 73.03,
+            "shannon_entropy": 7.0138,
+            "mean_brightness": 123.13,
+            "ambe": 23.21,
+            "psnr": 11.84,
+            "ssim": 0.0963,
+            "snr": 4.54,
+            "execution_time_ms": 34.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 69.42,
+            "shannon_entropy": 7.6818,
+            "mean_brightness": 128.12,
+            "ambe": 28.2,
+            "psnr": 12.64,
+            "ssim": 0.2026,
+            "snr": 5.32,
+            "execution_time_ms": 33.99
+          },
+          "5": {
+            "rms_contrast": 69.53,
+            "shannon_entropy": 7.8234,
+            "mean_brightness": 128.11,
+            "ambe": 28.19,
+            "psnr": 12.9,
+            "ssim": 0.3646,
+            "snr": 5.31,
+            "execution_time_ms": 33.0
+          },
+          "7": {
+            "rms_contrast": 69.49,
+            "shannon_entropy": 7.8365,
+            "mean_brightness": 128.13,
+            "ambe": 28.21,
+            "psnr": 12.97,
+            "ssim": 0.5173,
+            "snr": 5.31,
+            "execution_time_ms": 34.01
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 69.43,
+            "shannon_entropy": 7.7479,
+            "mean_brightness": 128.11,
+            "ambe": 28.19,
+            "psnr": 12.61,
+            "ssim": 0.1929,
+            "snr": 5.32,
+            "execution_time_ms": 54.01
+          },
+          "5": {
+            "rms_contrast": 69.52,
+            "shannon_entropy": 7.8765,
+            "mean_brightness": 128.01,
+            "ambe": 28.09,
+            "psnr": 12.75,
+            "ssim": 0.2487,
+            "snr": 5.3,
+            "execution_time_ms": 45.0
+          },
+          "7": {
+            "rms_contrast": 69.55,
+            "shannon_entropy": 7.8762,
+            "mean_brightness": 127.99,
+            "ambe": 28.07,
+            "psnr": 12.76,
+            "ssim": 0.2548,
+            "snr": 5.3,
+            "execution_time_ms": 61.01
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 68.53,
+            "shannon_entropy": 7.0945,
+            "mean_brightness": 128.71,
+            "ambe": 28.79,
+            "psnr": 13.11,
+            "ssim": 0.9115,
+            "snr": 5.47,
+            "execution_time_ms": 34.08
+          },
+          "5": {
+            "rms_contrast": 68.58,
+            "shannon_entropy": 7.0177,
+            "mean_brightness": 128.74,
+            "ambe": 28.82,
+            "psnr": 13.11,
+            "ssim": 0.9168,
+            "snr": 5.47,
+            "execution_time_ms": 34.0
+          },
+          "7": {
+            "rms_contrast": 68.6,
+            "shannon_entropy": 7.0127,
+            "mean_brightness": 128.8,
+            "ambe": 28.88,
+            "psnr": 13.1,
+            "ssim": 0.9215,
+            "snr": 5.47,
+            "execution_time_ms": 35.0
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 72.87,
+            "shannon_entropy": 7.0364,
+            "mean_brightness": 123.92,
+            "ambe": 24.0,
+            "psnr": 11.82,
+            "ssim": 0.0943,
+            "snr": 4.61,
+            "execution_time_ms": 35.0
+          },
+          "5": {
+            "rms_contrast": 72.87,
+            "shannon_entropy": 7.1424,
+            "mean_brightness": 124.04,
+            "ambe": 24.12,
+            "psnr": 11.82,
+            "ssim": 0.0943,
+            "snr": 4.62,
+            "execution_time_ms": 35.06
+          },
+          "7": {
+            "rms_contrast": 72.74,
+            "shannon_entropy": 7.1578,
+            "mean_brightness": 124.16,
+            "ambe": 24.24,
+            "psnr": 11.82,
+            "ssim": 0.0935,
+            "snr": 4.64,
+            "execution_time_ms": 34.92
+          }
+        }
+      }
+    }
+  },
+  "landscape4_misty_valley": {
+    "methods": {
+      "raw": {
+        "rms_contrast": 24.39,
+        "shannon_entropy": 5.3349,
+        "mean_brightness": 112.08,
+        "ambe": 0.0,
+        "psnr": 100.0,
+        "ssim": 1.0,
+        "snr": 13.25,
+        "execution_time_ms": 0.0
+      },
+      "rgb_he": {
+        "rms_contrast": 67.58,
+        "shannon_entropy": 6.0248,
+        "mean_brightness": 133.35,
+        "ambe": 21.27,
+        "psnr": 14.4,
+        "ssim": 0.8845,
+        "snr": 5.9,
+        "execution_time_ms": 34.93
+      },
+      "hsv_v": {
+        "rms_contrast": 61.56,
+        "shannon_entropy": 5.8579,
+        "mean_brightness": 125.91,
+        "ambe": 13.83,
+        "psnr": 15.87,
+        "ssim": 0.9057,
+        "snr": 6.22,
+        "execution_time_ms": 2.0
+      },
+      "ycrcb_y": {
+        "rms_contrast": 67.17,
+        "shannon_entropy": 5.2858,
+        "mean_brightness": 133.99,
+        "ambe": 21.91,
+        "psnr": 14.34,
+        "ssim": 0.8912,
+        "snr": 6.0,
+        "execution_time_ms": 3.0
+      },
+      "clahe": {
+        "rms_contrast": 32.11,
+        "shannon_entropy": 6.5778,
+        "mean_brightness": 109.31,
+        "ambe": 2.77,
+        "psnr": 26.4,
+        "ssim": 0.9776,
+        "snr": 10.64,
+        "execution_time_ms": 4.99
+      }
+    },
+    "noise_filters": {
+      "gaussian": {
+        "none": {
+          "3": {
+            "rms_contrast": 71.44,
+            "shannon_entropy": 7.9188,
+            "mean_brightness": 128.55,
+            "ambe": 16.47,
+            "psnr": 13.56,
+            "ssim": 0.2096,
+            "snr": 5.1,
+            "execution_time_ms": 35.0
+          },
+          "5": {
+            "rms_contrast": 71.45,
+            "shannon_entropy": 7.9195,
+            "mean_brightness": 128.51,
+            "ambe": 16.43,
+            "psnr": 13.56,
+            "ssim": 0.2095,
+            "snr": 5.1,
+            "execution_time_ms": 33.99
+          },
+          "7": {
+            "rms_contrast": 71.44,
+            "shannon_entropy": 7.9199,
+            "mean_brightness": 128.52,
+            "ambe": 16.44,
+            "psnr": 13.56,
+            "ssim": 0.2098,
+            "snr": 5.1,
+            "execution_time_ms": 32.07
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 72.84,
+            "shannon_entropy": 7.8938,
+            "mean_brightness": 129.06,
+            "ambe": 16.98,
+            "psnr": 13.78,
+            "ssim": 0.5558,
+            "snr": 4.97,
+            "execution_time_ms": 33.08
+          },
+          "5": {
+            "rms_contrast": 72.61,
+            "shannon_entropy": 7.8893,
+            "mean_brightness": 129.44,
+            "ambe": 17.36,
+            "psnr": 13.85,
+            "ssim": 0.7045,
+            "snr": 5.02,
+            "execution_time_ms": 32.56
+          },
+          "7": {
+            "rms_contrast": 72.13,
+            "shannon_entropy": 7.8394,
+            "mean_brightness": 129.82,
+            "ambe": 17.74,
+            "psnr": 13.91,
+            "ssim": 0.7631,
+            "snr": 5.1,
+            "execution_time_ms": 33.39
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 72.89,
+            "shannon_entropy": 7.8928,
+            "mean_brightness": 128.97,
+            "ambe": 16.89,
+            "psnr": 13.77,
+            "ssim": 0.5377,
+            "snr": 4.96,
+            "execution_time_ms": 33.0
+          },
+          "5": {
+            "rms_contrast": 72.81,
+            "shannon_entropy": 7.8913,
+            "mean_brightness": 129.11,
+            "ambe": 17.03,
+            "psnr": 13.8,
+            "ssim": 0.6086,
+            "snr": 4.98,
+            "execution_time_ms": 34.05
+          },
+          "7": {
+            "rms_contrast": 72.74,
+            "shannon_entropy": 7.8924,
+            "mean_brightness": 129.22,
+            "ambe": 17.14,
+            "psnr": 13.81,
+            "ssim": 0.615,
+            "snr": 4.99,
+            "execution_time_ms": 33.74
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 72.87,
+            "shannon_entropy": 7.8953,
+            "mean_brightness": 128.95,
+            "ambe": 16.87,
+            "psnr": 13.75,
+            "ssim": 0.4968,
+            "snr": 4.96,
+            "execution_time_ms": 33.0
+          },
+          "5": {
+            "rms_contrast": 72.79,
+            "shannon_entropy": 7.8979,
+            "mean_brightness": 129.29,
+            "ambe": 17.22,
+            "psnr": 13.81,
+            "ssim": 0.6625,
+            "snr": 4.99,
+            "execution_time_ms": 35.38
+          },
+          "7": {
+            "rms_contrast": 72.47,
+            "shannon_entropy": 7.889,
+            "mean_brightness": 129.59,
+            "ambe": 17.51,
+            "psnr": 13.86,
+            "ssim": 0.7365,
+            "snr": 5.05,
+            "execution_time_ms": 33.07
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 72.83,
+            "shannon_entropy": 7.8957,
+            "mean_brightness": 128.88,
+            "ambe": 16.8,
+            "psnr": 13.74,
+            "ssim": 0.4468,
+            "snr": 4.96,
+            "execution_time_ms": 32.01
+          },
+          "5": {
+            "rms_contrast": 72.81,
+            "shannon_entropy": 7.894,
+            "mean_brightness": 129.16,
+            "ambe": 17.08,
+            "psnr": 13.8,
+            "ssim": 0.6055,
+            "snr": 4.98,
+            "execution_time_ms": 34.45
+          },
+          "7": {
+            "rms_contrast": 72.57,
+            "shannon_entropy": 7.8899,
+            "mean_brightness": 129.48,
+            "ambe": 17.4,
+            "psnr": 13.85,
+            "ssim": 0.7095,
+            "snr": 5.03,
+            "execution_time_ms": 33.8
+          }
+        }
+      },
+      "salt_pepper": {
+        "none": {
+          "3": {
+            "rms_contrast": 72.16,
+            "shannon_entropy": 6.0083,
+            "mean_brightness": 127.27,
+            "ambe": 15.19,
+            "psnr": 13.08,
+            "ssim": 0.0798,
+            "snr": 4.93,
+            "execution_time_ms": 31.88
+          },
+          "5": {
+            "rms_contrast": 72.17,
+            "shannon_entropy": 6.0179,
+            "mean_brightness": 127.29,
+            "ambe": 15.21,
+            "psnr": 13.08,
+            "ssim": 0.08,
+            "snr": 4.93,
+            "execution_time_ms": 35.06
+          },
+          "7": {
+            "rms_contrast": 72.18,
+            "shannon_entropy": 6.0153,
+            "mean_brightness": 127.29,
+            "ambe": 15.21,
+            "psnr": 13.07,
+            "ssim": 0.0794,
+            "snr": 4.93,
+            "execution_time_ms": 34.51
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 71.82,
+            "shannon_entropy": 7.25,
+            "mean_brightness": 129.84,
+            "ambe": 17.76,
+            "psnr": 13.32,
+            "ssim": 0.0842,
+            "snr": 5.14,
+            "execution_time_ms": 32.99
+          },
+          "5": {
+            "rms_contrast": 73.38,
+            "shannon_entropy": 7.5585,
+            "mean_brightness": 128.87,
+            "ambe": 16.79,
+            "psnr": 13.54,
+            "ssim": 0.1789,
+            "snr": 4.89,
+            "execution_time_ms": 34.14
+          },
+          "7": {
+            "rms_contrast": 73.61,
+            "shannon_entropy": 7.6066,
+            "mean_brightness": 128.79,
+            "ambe": 16.71,
+            "psnr": 13.63,
+            "ssim": 0.2972,
+            "snr": 4.86,
+            "execution_time_ms": 33.86
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 72.2,
+            "shannon_entropy": 7.3818,
+            "mean_brightness": 129.36,
+            "ambe": 17.28,
+            "psnr": 13.24,
+            "ssim": 0.0792,
+            "snr": 5.06,
+            "execution_time_ms": 47.4
+          },
+          "5": {
+            "rms_contrast": 73.49,
+            "shannon_entropy": 7.7306,
+            "mean_brightness": 128.55,
+            "ambe": 16.48,
+            "psnr": 13.31,
+            "ssim": 0.1055,
+            "snr": 4.86,
+            "execution_time_ms": 37.0
+          },
+          "7": {
+            "rms_contrast": 73.5,
+            "shannon_entropy": 7.7488,
+            "mean_brightness": 128.59,
+            "ambe": 16.52,
+            "psnr": 13.33,
+            "ssim": 0.1086,
+            "snr": 4.86,
+            "execution_time_ms": 33.0
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 67.53,
+            "shannon_entropy": 6.0646,
+            "mean_brightness": 133.39,
+            "ambe": 21.31,
+            "psnr": 14.41,
+            "ssim": 0.8872,
+            "snr": 5.91,
+            "execution_time_ms": 34.0
+          },
+          "5": {
+            "rms_contrast": 67.44,
+            "shannon_entropy": 6.0844,
+            "mean_brightness": 133.42,
+            "ambe": 21.34,
+            "psnr": 14.42,
+            "ssim": 0.8952,
+            "snr": 5.93,
+            "execution_time_ms": 37.13
+          },
+          "7": {
+            "rms_contrast": 67.41,
+            "shannon_entropy": 6.0971,
+            "mean_brightness": 133.5,
+            "ambe": 21.42,
+            "psnr": 14.42,
+            "ssim": 0.8986,
+            "snr": 5.93,
+            "execution_time_ms": 34.56
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 72.15,
+            "shannon_entropy": 6.0732,
+            "mean_brightness": 127.31,
+            "ambe": 15.23,
+            "psnr": 13.07,
+            "ssim": 0.0795,
+            "snr": 4.93,
+            "execution_time_ms": 34.01
+          },
+          "5": {
+            "rms_contrast": 72.11,
+            "shannon_entropy": 6.1123,
+            "mean_brightness": 127.35,
+            "ambe": 15.27,
+            "psnr": 13.08,
+            "ssim": 0.0788,
+            "snr": 4.94,
+            "execution_time_ms": 34.47
+          },
+          "7": {
+            "rms_contrast": 72.05,
+            "shannon_entropy": 6.135,
+            "mean_brightness": 127.42,
+            "ambe": 15.34,
+            "psnr": 13.08,
+            "ssim": 0.079,
+            "snr": 4.95,
+            "execution_time_ms": 34.12
+          }
+        }
+      }
+    }
+  },
+  "landscape5_coastal_rocks": {
+    "methods": {
+      "raw": {
+        "rms_contrast": 41.86,
+        "shannon_entropy": 6.3055,
+        "mean_brightness": 102.36,
+        "ambe": 0.0,
+        "psnr": 100.0,
+        "ssim": 1.0,
+        "snr": 7.77,
+        "execution_time_ms": 0.0
+      },
+      "rgb_he": {
+        "rms_contrast": 66.67,
+        "shannon_entropy": 7.7672,
+        "mean_brightness": 129.15,
+        "ambe": 26.78,
+        "psnr": 13.85,
+        "ssim": 0.7576,
+        "snr": 5.74,
+        "execution_time_ms": 34.03
+      },
+      "hsv_v": {
+        "rms_contrast": 51.85,
+        "shannon_entropy": 7.3887,
+        "mean_brightness": 95.8,
+        "ambe": 6.57,
+        "psnr": 21.58,
+        "ssim": 0.7398,
+        "snr": 5.33,
+        "execution_time_ms": 3.0
+      },
+      "ycrcb_y": {
+        "rms_contrast": 72.75,
+        "shannon_entropy": 6.4494,
+        "mean_brightness": 128.86,
+        "ambe": 26.5,
+        "psnr": 15.02,
+        "ssim": 0.7529,
+        "snr": 4.97,
+        "execution_time_ms": 2.0
+      },
+      "clahe": {
+        "rms_contrast": 48.24,
+        "shannon_entropy": 7.3696,
+        "mean_brightness": 106.54,
+        "ambe": 4.18,
+        "psnr": 21.48,
+        "ssim": 0.867,
+        "snr": 6.88,
+        "execution_time_ms": 5.01
+      }
+    },
+    "noise_filters": {
+      "gaussian": {
+        "none": {
+          "3": {
+            "rms_contrast": 64.94,
+            "shannon_entropy": 7.7924,
+            "mean_brightness": 128.34,
+            "ambe": 25.97,
+            "psnr": 13.74,
+            "ssim": 0.3329,
+            "snr": 5.92,
+            "execution_time_ms": 32.16
+          },
+          "5": {
+            "rms_contrast": 64.9,
+            "shannon_entropy": 7.7925,
+            "mean_brightness": 128.33,
+            "ambe": 25.97,
+            "psnr": 13.74,
+            "ssim": 0.3326,
+            "snr": 5.92,
+            "execution_time_ms": 32.0
+          },
+          "7": {
+            "rms_contrast": 64.89,
+            "shannon_entropy": 7.792,
+            "mean_brightness": 128.34,
+            "ambe": 25.98,
+            "psnr": 13.74,
+            "ssim": 0.3323,
+            "snr": 5.92,
+            "execution_time_ms": 33.05
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 65.67,
+            "shannon_entropy": 7.7024,
+            "mean_brightness": 129.14,
+            "ambe": 26.78,
+            "psnr": 13.79,
+            "ssim": 0.552,
+            "snr": 5.87,
+            "execution_time_ms": 32.27
+          },
+          "5": {
+            "rms_contrast": 65.28,
+            "shannon_entropy": 7.6576,
+            "mean_brightness": 129.65,
+            "ambe": 27.29,
+            "psnr": 13.77,
+            "ssim": 0.6493,
+            "snr": 5.96,
+            "execution_time_ms": 34.0
+          },
+          "7": {
+            "rms_contrast": 64.58,
+            "shannon_entropy": 7.6256,
+            "mean_brightness": 130.27,
+            "ambe": 27.91,
+            "psnr": 13.75,
+            "ssim": 0.6843,
+            "snr": 6.09,
+            "execution_time_ms": 33.58
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 65.7,
+            "shannon_entropy": 7.7041,
+            "mean_brightness": 129.07,
+            "ambe": 26.7,
+            "psnr": 13.81,
+            "ssim": 0.5725,
+            "snr": 5.87,
+            "execution_time_ms": 33.0
+          },
+          "5": {
+            "rms_contrast": 65.65,
+            "shannon_entropy": 7.686,
+            "mean_brightness": 129.27,
+            "ambe": 26.91,
+            "psnr": 13.8,
+            "ssim": 0.6302,
+            "snr": 5.89,
+            "execution_time_ms": 33.24
+          },
+          "7": {
+            "rms_contrast": 65.61,
+            "shannon_entropy": 7.6847,
+            "mean_brightness": 129.27,
+            "ambe": 26.91,
+            "psnr": 13.81,
+            "ssim": 0.6341,
+            "snr": 5.89,
+            "execution_time_ms": 32.08
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 65.63,
+            "shannon_entropy": 7.6959,
+            "mean_brightness": 128.96,
+            "ambe": 26.6,
+            "psnr": 13.8,
+            "ssim": 0.5079,
+            "snr": 5.87,
+            "execution_time_ms": 34.0
+          },
+          "5": {
+            "rms_contrast": 65.52,
+            "shannon_entropy": 7.659,
+            "mean_brightness": 129.43,
+            "ambe": 27.07,
+            "psnr": 13.8,
+            "ssim": 0.6263,
+            "snr": 5.91,
+            "execution_time_ms": 33.32
+          },
+          "7": {
+            "rms_contrast": 65.07,
+            "shannon_entropy": 7.6419,
+            "mean_brightness": 129.96,
+            "ambe": 27.59,
+            "psnr": 13.79,
+            "ssim": 0.6763,
+            "snr": 6.01,
+            "execution_time_ms": 34.61
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 65.71,
+            "shannon_entropy": 7.7335,
+            "mean_brightness": 128.83,
+            "ambe": 26.47,
+            "psnr": 13.82,
+            "ssim": 0.5099,
+            "snr": 5.85,
+            "execution_time_ms": 14.4
+          },
+          "5": {
+            "rms_contrast": 65.79,
+            "shannon_entropy": 7.7006,
+            "mean_brightness": 129.23,
+            "ambe": 26.87,
+            "psnr": 13.83,
+            "ssim": 0.6432,
+            "snr": 5.86,
+            "execution_time_ms": 17.34
+          },
+          "7": {
+            "rms_contrast": 65.57,
+            "shannon_entropy": 7.6849,
+            "mean_brightness": 129.64,
+            "ambe": 27.28,
+            "psnr": 13.84,
+            "ssim": 0.7251,
+            "snr": 5.92,
+            "execution_time_ms": 16.03
+          }
+        }
+      },
+      "salt_pepper": {
+        "none": {
+          "3": {
+            "rms_contrast": 71.46,
+            "shannon_entropy": 7.5339,
+            "mean_brightness": 123.62,
+            "ambe": 21.26,
+            "psnr": 12.39,
+            "ssim": 0.1174,
+            "snr": 4.76,
+            "execution_time_ms": 14.53
+          },
+          "5": {
+            "rms_contrast": 71.47,
+            "shannon_entropy": 7.5347,
+            "mean_brightness": 123.6,
+            "ambe": 21.24,
+            "psnr": 12.4,
+            "ssim": 0.1187,
+            "snr": 4.76,
+            "execution_time_ms": 14.0
+          },
+          "7": {
+            "rms_contrast": 71.49,
+            "shannon_entropy": 7.5351,
+            "mean_brightness": 123.6,
+            "ambe": 21.24,
+            "psnr": 12.39,
+            "ssim": 0.1178,
+            "snr": 4.76,
+            "execution_time_ms": 15.0
+          }
+        },
+        "mean": {
+          "3": {
+            "rms_contrast": 66.97,
+            "shannon_entropy": 7.8813,
+            "mean_brightness": 128.58,
+            "ambe": 26.22,
+            "psnr": 13.34,
+            "ssim": 0.1268,
+            "snr": 5.67,
+            "execution_time_ms": 14.15
+          },
+          "5": {
+            "rms_contrast": 66.55,
+            "shannon_entropy": 7.8822,
+            "mean_brightness": 128.52,
+            "ambe": 26.16,
+            "psnr": 13.58,
+            "ssim": 0.2081,
+            "snr": 5.72,
+            "execution_time_ms": 14.44
+          },
+          "7": {
+            "rms_contrast": 66.54,
+            "shannon_entropy": 7.8631,
+            "mean_brightness": 128.65,
+            "ambe": 26.29,
+            "psnr": 13.64,
+            "ssim": 0.3083,
+            "snr": 5.73,
+            "execution_time_ms": 15.0
+          }
+        },
+        "gaussian": {
+          "3": {
+            "rms_contrast": 67.04,
+            "shannon_entropy": 7.9017,
+            "mean_brightness": 128.49,
+            "ambe": 26.13,
+            "psnr": 13.32,
+            "ssim": 0.1325,
+            "snr": 5.65,
+            "execution_time_ms": 15.32
+          },
+          "5": {
+            "rms_contrast": 66.76,
+            "shannon_entropy": 7.9091,
+            "mean_brightness": 128.4,
+            "ambe": 26.04,
+            "psnr": 13.46,
+            "ssim": 0.1591,
+            "snr": 5.68,
+            "execution_time_ms": 15.0
+          },
+          "7": {
+            "rms_contrast": 66.77,
+            "shannon_entropy": 7.9089,
+            "mean_brightness": 128.43,
+            "ambe": 26.07,
+            "psnr": 13.47,
+            "ssim": 0.1632,
+            "snr": 5.68,
+            "execution_time_ms": 14.49
+          }
+        },
+        "median": {
+          "3": {
+            "rms_contrast": 66.21,
+            "shannon_entropy": 7.7266,
+            "mean_brightness": 129.76,
+            "ambe": 27.4,
+            "psnr": 13.75,
+            "ssim": 0.6885,
+            "snr": 5.84,
+            "execution_time_ms": 15.0
+          },
+          "5": {
+            "rms_contrast": 65.49,
+            "shannon_entropy": 7.6632,
+            "mean_brightness": 130.41,
+            "ambe": 28.04,
+            "psnr": 13.73,
+            "ssim": 0.7006,
+            "snr": 5.98,
+            "execution_time_ms": 14.55
+          },
+          "7": {
+            "rms_contrast": 64.77,
+            "shannon_entropy": 7.5921,
+            "mean_brightness": 130.93,
+            "ambe": 28.57,
+            "psnr": 13.72,
+            "ssim": 0.7082,
+            "snr": 6.11,
+            "execution_time_ms": 15.01
+          }
+        },
+        "bilateral": {
+          "3": {
+            "rms_contrast": 70.48,
+            "shannon_entropy": 7.5663,
+            "mean_brightness": 125.6,
+            "ambe": 23.23,
+            "psnr": 12.35,
+            "ssim": 0.1022,
+            "snr": 5.02,
+            "execution_time_ms": 15.01
+          },
+          "5": {
+            "rms_contrast": 70.09,
+            "shannon_entropy": 7.5259,
+            "mean_brightness": 125.98,
+            "ambe": 23.61,
+            "psnr": 12.34,
+            "ssim": 0.102,
+            "snr": 5.09,
+            "execution_time_ms": 15.0
+          },
+          "7": {
+            "rms_contrast": 69.6,
+            "shannon_entropy": 7.4836,
+            "mean_brightness": 126.46,
+            "ambe": 24.1,
+            "psnr": 12.34,
+            "ssim": 0.1047,
+            "snr": 5.19,
+            "execution_time_ms": 15.2
+          }
+        }
+      }
+    }
+  }
+}
